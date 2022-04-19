@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_baseline_access_time_24"
+            android:title="Pomodoro" />
+        <item
+            android:id="@+id/nav_list"
+            android:icon="@drawable/ic_baseline_playlist_add_check_24"
+            android:title="Lista de atividades" />
+        <item
+            android:id="@+id/nav_quizz"
+            android:icon="@drawable/ic_baseline_question_answer_24"
+            android:title="Questionário" />
+        <item
+            android:id="@+id/nav_grupos"
+            android:icon="@drawable/ic_baseline_group_24"
+            android:title="Grupos" />
+        <item
+            android:id="@+id/nav_agenda"
+            android:icon="@drawable/ic_baseline_calendar_today_24"
+            android:title="Agendar Pomodoro" />
+        <item
+            android:id="@+id/nav_tutorial"
+            android:icon="@drawable/ic_baseline_video_library_24"
+            android:title="Tutoriais" />
+        <item
+            android:id="@+id/nav_config"
+            android:icon="@drawable/ic_baseline_settings_24"
+            android:title="Configurações" />
+    </group>
+</menu>

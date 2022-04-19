@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">Pomodoro</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Pomodoro</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="pomodoro">Pomodoro</string>
+    <string name="sua_atividade">Sua atividade</string>
+    <string name="iniciar_pomodoro">Iniciar Pomodoro</string>
+    <string name="lista_de_atividades">Lista de atividades</string>
+    <string name="relogio">Relógio</string>
+    <string name="configuracoes">Configurações</string>
+    <string name="tempo_do_pomodoro">Tempo do Pomodoro:</string>
+    <string name="tempo_do_descanso_curto">Tempo do descanso curto:</string>
+    <string name="minutos">Minutos</string>
+    <string name="tempo_do_descanso_longo">Tempo do descanso longo:</string>
+    <string name="som_do_alarme">Som do alarme:</string>
+    <string name="som_do_rel_gio">Som do relógio:</string>
+    <string name="salvar">Salvar</string>
+    <string name="definir_hora"><u>Definir hora</u></string>
+    <string name="cadastro_de_nova_agenda">Cadastro de nova Agenda</string>
+    <string name="data">Data:</string>
+    <string name="hora">Hora:</string>
+</resources>
