@@ -3,39 +3,43 @@ package com.example.pomodoro.utils;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-import android.widget.Toast;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final String BANCO_DADOS = "pomodoro";
-    private static final int VERSAO = 3;
+    private static final String DATABASE = "pomodoro";
+    private static final int VERSION = 1;
 
     public DatabaseHelper(Context context) {
-        super(context, BANCO_DADOS, null, VERSAO);
+        super(context, DATABASE, null, VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE IF NOT EXISTS atividades (" +
+        db.execSQL("CREATE TABLE IF NOT EXISTS activities (" +
                             "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
-                            "nome TEXT, " +
-                            "descricao TEXT, " +
-                            "concluido INTEGER, " +
-                            "tempo TEXT);");
+                            "name TEXT, " +
+                            "description TEXT, " +
+                            "concluded INTEGER, " +
+                            "time TEXT);");
 
-        db.execSQL("CREATE TABLE IF NOT EXISTS configs (" +
+        db.execSQL("CREATE TABLE IF NOT EXISTS settings (" +
                 "id INTEGER PRIMARY KEY NOT NULL, " +
-                "tempo_pomodoro int, " +
-                "tempo_pausa_curta int, " +
-                "tempo_pausa_longa int, " +
-                "som_alarme TEXT, " +
-                "som_relogio TEXT);");
+                "pomodoro_time int, " +
+                "short_break_time int, " +
+                "long_break_time int, " +
+                "alarm_sound TEXT, " +
+                "clock_sound TEXT);");
 
-        String sql = "INSERT INTO configs " +
-                "(id, tempo_pomodoro, tempo_pausa_curta, tempo_pausa_longa, som_alarme, som_relogio) " +
+        String sql = "INSERT INTO settings " +
+                "(id, pomodoro_time, short_break_time, long_break_time, alarm_sound, clock_sound) " +
                 "VALUES(1, 25, 5, 15, 'Sound 1', '')";
         db.execSQL(sql);
+
+        db.execSQL("CREATE TABLE IF NOT EXISTS agenda (" +
+                "id INTEGER PRIMARY KEY NOT NULL, " +
+                "date int, " +
+                "hour int, " +
+                "hour_notify int);");
     }
 
     @Override

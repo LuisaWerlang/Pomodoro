@@ -29,4 +29,6 @@
     <string name="cadastro_de_nova_agenda">Cadastro de nova Agenda</string>
     <string name="data">Data:</string>
     <string name="hora">Hora:</string>
+    <string name="agendar_pomodoro">Agendar Pomodoro</string>
+    <string name="hora_para_notificacao">Hora para notificação:</string>
 </resources>

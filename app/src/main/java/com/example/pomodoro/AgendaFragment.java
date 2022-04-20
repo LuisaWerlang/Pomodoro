@@ -1,5 +1,6 @@
 package com.example.pomodoro;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -7,8 +8,18 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CalendarView;
+
+import com.example.pomodoro.utils.EventDecorator;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.CalendarMode;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -16,18 +27,13 @@ import java.util.Locale;
  * Use the {@link AgendaFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AgendaFragment extends Fragment implements CalendarView.OnDateChangeListener {
+public class AgendaFragment extends Fragment implements OnDateSelectedListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private CalendarView calendar;
     private int current_day, current_month, current_year;
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     public AgendaFragment() {
         // Required empty public constructor
@@ -55,46 +61,64 @@ public class AgendaFragment extends Fragment implements CalendarView.OnDateChang
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            // TODO: Rename and change types of parameters
+            String mParam1 = getArguments().getString(ARG_PARAM1);
+            String mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
+    @SuppressLint("ResourceType")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_agenda, container, false);
 
-        calendar = view.findViewById(R.id.calendarView); // get the reference of CalendarView
-        calendar.setOnDateChangeListener(this);
+        MaterialCalendarView calendarView = view.findViewById(R.id.calendarView); // get the reference of CalendarView
         getCurrentDate();
+
+        calendarView.setSelectedDate(CalendarDay.from(current_year, current_month,current_day));
+        calendarView.state().edit()
+                .setMinimumDate(CalendarDay.from(current_year, current_month, current_day))
+                .setCalendarDisplayMode(CalendarMode.MONTHS)
+                .commit();
+
+        calendarView.setOnDateChangedListener(this);
+
+        //Collection<CalendarDay> calendarDays = null;
+
+        List<CalendarDay> calendarDays = Arrays.asList(CalendarDay.from(2022,4,20));
+
+        calendarView.addDecorators(new EventDecorator(
+               getResources().getColor(R.color.red), calendarDays));
 
         return view;
     }
 
     @Override
-    public void onSelectedDayChange(@NonNull CalendarView calendarView, int selectedYear, int selectedMonth, int selectedDay) {
-        String day = String.valueOf(selectedDay);
-        if(selectedDay < 10)
-            day = "0"+selectedDay;
-        int correct_month = selectedMonth+1;
-        String month = String.valueOf(correct_month);
-        if(correct_month < 10)
-            month = "0"+correct_month;
+    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+        //buscar se existe eventos na data selecionada
+        //se existir, mostrar os eventos com um botão de + caso quiser cadastrar novo
+        //permitir editar as horas
+        //permitir excluir
+
+        String day = String.valueOf(date.getDay());
+        if(date.getDay() < 10)
+            day = "0"+date.getDay();
+        String month = String.valueOf(date.getMonth());
+        if(date.getMonth() < 10)
+            month = "0"+date.getMonth();
         Intent intent = new Intent(getActivity(), NewAgenda.class);
-        intent.putExtra("date", day+"/"+month+"/"+selectedYear);
+        intent.putExtra("date", day+"/"+month+"/"+date.getYear());
         startActivity(intent);
     }
 
     public void getCurrentDate() {
-        long dateLong = calendar.getDate();
+        Date dateLong = new Date();
         Locale locale = new Locale("pt", "BR");
-
         SimpleDateFormat day = new SimpleDateFormat("dd", locale);
         SimpleDateFormat month = new SimpleDateFormat("MM", locale);
         SimpleDateFormat year = new SimpleDateFormat("yyyy", locale);
-
         current_day = Integer.parseInt(day.format(dateLong));
         current_month = Integer.parseInt(month.format(dateLong));
         current_year = Integer.parseInt(year.format(dateLong));

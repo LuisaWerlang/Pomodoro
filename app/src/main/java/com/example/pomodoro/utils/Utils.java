@@ -22,7 +22,7 @@ public class Utils {
     }
 
     public void findSettings() {
-        String query = "SELECT * FROM configs WHERE id = 1";
+        String query = "SELECT * FROM settings WHERE id = 1";
 
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);

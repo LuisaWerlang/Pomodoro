@@ -50,25 +50,43 @@
         android:autofillHints=""
         tools:ignore="LabelFor" />
 
-<!--    <Button-->
-<!--        android:id="@+id/select_hour"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:background="#fff"-->
-<!--        android:textColor="#0000ff"-->
-<!--        android:textAllCaps="false"-->
-<!--        android:layout_gravity="left"-->
-<!--        android:text="@string/definir_hora"/>-->
-
     <TextView
         android:id="@+id/select_hour"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#fff"
         android:textColor="#0000ff"
         android:textAllCaps="false"
         android:layout_gravity="left"
         android:text="@string/definir_hora"
+        android:textSize="15sp"
+        tools:ignore="RtlHardcoded" />
+
+    <TextView
+        android:id="@+id/tv_notify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/hora_para_notificacao" />
+
+    <EditText
+        android:id="@+id/notify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:enabled="false"
+        android:inputType="time"
+        android:autofillHints=""
+        tools:ignore="LabelFor" />
+
+    <TextView
+        android:id="@+id/select_hour_notify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#0000ff"
+        android:textAllCaps="false"
+        android:layout_gravity="left"
+        android:text="@string/definir_hora"
+        android:textSize="15sp"
         tools:ignore="RtlHardcoded" />
 
     <Button
@@ -79,7 +97,5 @@
         android:layout_marginTop="20dp"
         android:layout_marginBottom="50dp"
         android:text="@string/salvar" />
-
-
 
 </LinearLayout>

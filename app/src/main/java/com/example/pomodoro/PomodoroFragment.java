@@ -122,7 +122,7 @@ public class PomodoroFragment extends Fragment {
         }
 
         helper = new DatabaseHelper(getActivity());
-        String query = "SELECT * FROM atividades";
+        String query = "SELECT * FROM activities";
         activities = listActivities(query);
 
         tvActivity = view.findViewById(R.id.tvActivity);

@@ -52,6 +52,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragment.setArguments(bundle);
             fragmentTransaction.replace(R.id.nav_host_fragment_content_main, fragment, "NewFragmentTag");
             fragmentTransaction.commit();
+        } else if (getIntent().hasExtra("screen")) {
+            String fragment = getIntent().getStringExtra("screen");
+            if(fragment.equals("AgendaFragment")) {
+                AgendaFragment agenda = new AgendaFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.nav_host_fragment_content_main, agenda)
+                        .commit();
+            }
         } else {
             PomodoroFragment fragment = new PomodoroFragment();
             getSupportFragmentManager().beginTransaction()

@@ -31,8 +31,8 @@ public class ListaAtividadesFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private DatabaseHelper helper;
     private List<Map<String, Object>> activities;
-    private final String[] de = {"nome", "descricao"};//, "concluido"};
-    private final int[] para = {R.id.nome, R.id.descricao};//, R.id.checkbox};
+    private final String[] from = {"name", "description"};//, "concluido"};
+    private final int[] to = {R.id.nome, R.id.descricao};//, R.id.checkbox};
 
     public ListaAtividadesFragment() {
         // Required empty public constructor
@@ -73,13 +73,13 @@ public class ListaAtividadesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_lista_atividades, container, false);
 
         helper = new DatabaseHelper(getActivity());
-        String query = "SELECT * FROM atividades";
+        String query = "SELECT * FROM activities";
         activities = listActivities(query);
 
         // Aqui você instancia sua ListView
         ListView activities_list = view.findViewById(R.id.list_view_atividades);
 
-        SimpleAdapter adapter = new SimpleAdapter(getActivity(), activities, R.layout.listagem, de, para);
+        SimpleAdapter adapter = new SimpleAdapter(getActivity(), activities, R.layout.listagem, from, to);
         activities_list.setAdapter(adapter);
 
         activities_list.setOnItemClickListener((adapterView, view12, i, l) -> {
@@ -103,14 +103,14 @@ public class ListaAtividadesFragment extends Fragment {
         activities = new ArrayList<>();
         for(int i=0; i<cursor.getCount(); i++) {
             Map<String, Object> item = new HashMap<>();
-            String nome = cursor.getString(1);
-            String descricao = cursor.getString(2);
-            int concluido = cursor.getInt(3);
-            String tempo = cursor.getString(4);
-            item.put("nome", nome);
-            item.put("descricao", descricao);
-            item.put("tempo", tempo);
-            item.put("concluido", concluido);
+            String name = cursor.getString(1);
+            String description = cursor.getString(2);
+            int concluded = cursor.getInt(3);
+            String time = cursor.getString(4);
+            item.put("name", name);
+            item.put("description", description);
+            item.put("time", time);
+            item.put("concluded", concluded);
             activities.add(item);
             cursor.moveToNext();
         }
