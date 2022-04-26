@@ -1,8 +1,6 @@
 package com.example.pomodoro;
 
 import android.annotation.SuppressLint;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,10 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.pomodoro.utils.DatabaseHelper;
 import com.example.pomodoro.utils.Utils;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -88,7 +83,6 @@ public class PomodoroFragment extends Fragment {
         utils.findSettings();
         pomodoro_time = utils.getPomodoroTime();
         String alarm_name = utils.getAlarmName();
-        utils.close();
 
         tv = view.findViewById(R.id.tvCountDownTimer);
         tv.setText(pomodoro_time+" : 00");
@@ -123,7 +117,8 @@ public class PomodoroFragment extends Fragment {
 
         helper = new DatabaseHelper(getActivity());
         String query = "SELECT * FROM activities";
-        activities = listActivities(query);
+        activities = utils.listActivities(query, activities);
+        utils.close();
 
         tvActivity = view.findViewById(R.id.tvActivity);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, activities);
@@ -166,21 +161,6 @@ public class PomodoroFragment extends Fragment {
 
         MyCountDownTimer timer = new MyCountDownTimer(getActivity(), tv, (long) pomodoro_time*60*1000, 1000, start, time, mp, pomodoro_amount, tvActivity);
         timer.start();
-    }
-
-    private List<String> listActivities(String query) {
-        SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        cursor.moveToFirst();
-        activities = new ArrayList<>();
-        activities.add("Selecione");
-        for(int i=0; i<cursor.getCount(); i++) {
-            String nome = cursor.getString(1);
-            activities.add(nome);
-            cursor.moveToNext();
-        }
-        cursor.close();
-        return activities;
     }
 
     private void releasePlayer() {

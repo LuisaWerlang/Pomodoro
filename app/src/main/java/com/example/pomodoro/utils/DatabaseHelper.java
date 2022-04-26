@@ -39,7 +39,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "id INTEGER PRIMARY KEY NOT NULL, " +
                 "date int, " +
                 "hour int, " +
-                "hour_notify int);");
+                "hour_notify int, " +
+                "activities_id INTEGER NOT NULL, FOREIGN KEY(activities_id) REFERENCES activities(id));");
     }
 
     @Override

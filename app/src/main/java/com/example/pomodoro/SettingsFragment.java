@@ -84,7 +84,7 @@ public class SettingsFragment extends Fragment {
         String short_break_time = "";
         String long_break_time = "";
 
-        Bundle mBundle = new Bundle();
+        Bundle mBundle;
         mBundle = getArguments();
         if(mBundle != null) {
             alarm_name = mBundle.getString("settings_sound");
