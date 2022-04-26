@@ -8,7 +8,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -47,6 +46,7 @@ public class NewAgenda extends AppCompatActivity {
         String date = getIntent().getStringExtra("date");
         String hour = getIntent().getStringExtra("hour");
         String hour_notify = getIntent().getStringExtra("hour_notify");
+        String activity_name = getIntent().getStringExtra("activity_name");
 
         LinearLayout ll_delete = findViewById(R.id.ll_delete);
 
@@ -66,6 +66,8 @@ public class NewAgenda extends AppCompatActivity {
         tvActivity = findViewById(R.id.tvActivity);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, activities);
         tvActivity.setAdapter(adapter);
+        int spinnerPostion = adapter.getPosition(activity_name);
+        tvActivity.setSelection(spinnerPostion);
 
         et_date = findViewById(R.id.date);
         et_date.setEnabled(false);
@@ -117,8 +119,7 @@ public class NewAgenda extends AppCompatActivity {
         String date = et_date.getText().toString();
         String hour = et_hour.getText().toString();
         String hour_notify = et_notify.getText().toString();
-        int activity_id = tvActivity.getId();
-        Log.e("teste",""+activity_id);
+        String activity_name = (String) tvActivity.getSelectedItem();
 
         if ((date.equals(""))||(hour.equals(""))||(hour_notify.equals(""))||(tvActivity.getSelectedItem().equals("Selecione")))
             Toast.makeText(this, "Informe todos os campos para salvar", Toast.LENGTH_SHORT).show();
@@ -137,7 +138,7 @@ public class NewAgenda extends AppCompatActivity {
                 values.put("date", finalDate);
                 values.put("hour", finalHour);
                 values.put("hour_notify", finalHourNotify);
-                values.put("activities_id", activity_id);
+                values.put("activity_name", activity_name);
 
                 long result;
                 if (id != 0) {

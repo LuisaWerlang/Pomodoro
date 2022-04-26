@@ -97,6 +97,7 @@ public class Utils {
                 item.put("date", this.agenda_date);
                 item.put("hour", this.agenda_hour);
                 item.put("hour_notify", this.agenda_hour_notify);
+                item.put("activity_name", cursor.getString(4));
                 agendas.add(item);
 
                 sdf = new SimpleDateFormat("dd");

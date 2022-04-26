@@ -59,6 +59,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.nav_host_fragment_content_main, agenda)
                         .commit();
+            } else if(fragment.equals("ActivitiesListFragment")) {
+                ActivitiesListFragment activities = new ActivitiesListFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.nav_host_fragment_content_main, activities)
+                        .commit();
             }
         } else {
             PomodoroFragment fragment = new PomodoroFragment();
@@ -97,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .commit();
         } else if (id == R.id.nav_list) {
             // abrindo um novo fragment
-            ListaAtividadesFragment fragment = new ListaAtividadesFragment();
+            ActivitiesListFragment fragment = new ActivitiesListFragment();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.nav_host_fragment_content_main, fragment)
                     .commit();

@@ -39,8 +39,8 @@ public class AgendaFragment extends Fragment implements OnDateSelectedListener, 
     private int current_day, current_month, current_year;
     private List<Map<String, Object>> agendas;
     private ListView agendas_list;
-    private final String[] from = {"date", "hour", "hour_notify"};
-    private final int[] to = {R.id.date, R.id.hour, R.id.hour_notify};
+    private final String[] from = {"activity_name", "date", "hour", "hour_notify"};
+    private final int[] to = {R.id.activity, R.id.date, R.id.hour, R.id.hour_notify};
     private LinearLayout ll_add;
     private ImageButton add_agenda;
 
@@ -163,11 +163,13 @@ public class AgendaFragment extends Fragment implements OnDateSelectedListener, 
         String agenda_date = (String) item.get("date");
         String agenda_hour = (String) item.get("hour");
         String agenda_hour_notify = (String) item.get("hour_notify");
+        String activity_name = (String) item.get("activity_name");
         Intent intent = new Intent(getActivity(), NewAgenda.class);
         intent.putExtra("id", agenda_id);
         intent.putExtra("date", agenda_date);
         intent.putExtra("hour", agenda_hour);
         intent.putExtra("hour_notify", agenda_hour_notify);
+        intent.putExtra("activity_name", activity_name);
         startActivity(intent);
     }
 }

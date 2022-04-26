@@ -33,4 +33,8 @@
     <string name="hora_para_notificacao">Hora para notificação:</string>
     <string name="excluir">Excluir</string>
     <string name="atividade">Atividade:</string>
+    <string name="nome">Nome:</string>
+    <string name="descri_o">Descrição:</string>
+    <string name="tempo">Tempo:</string>
+    <string name="nova_atividade">Nova Atividade</string>
 </resources>

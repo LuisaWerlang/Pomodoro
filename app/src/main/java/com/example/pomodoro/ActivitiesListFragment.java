@@ -1,11 +1,11 @@
 package com.example.pomodoro;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +20,10 @@ import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ListaAtividadesFragment#newInstance} factory method to
+ * Use the {@link ActivitiesListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ListaAtividadesFragment extends Fragment {
+public class ActivitiesListFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,7 +34,7 @@ public class ListaAtividadesFragment extends Fragment {
     private final String[] from = {"name", "description"};//, "concluido"};
     private final int[] to = {R.id.nome, R.id.descricao};//, R.id.checkbox};
 
-    public ListaAtividadesFragment() {
+    public ActivitiesListFragment() {
         // Required empty public constructor
     }
 
@@ -44,11 +44,11 @@ public class ListaAtividadesFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ListaAtividadesFragment.
+     * @return A new instance of fragment ActivitiesListFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ListaAtividadesFragment newInstance(String param1, String param2) {
-        ListaAtividadesFragment fragment = new ListaAtividadesFragment();
+    public static ActivitiesListFragment newInstance(String param1, String param2) {
+        ActivitiesListFragment fragment = new ActivitiesListFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -70,7 +70,7 @@ public class ListaAtividadesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_lista_atividades, container, false);
+        View view = inflater.inflate(R.layout.fragment_activities_list, container, false);
 
         helper = new DatabaseHelper(getActivity());
         String query = "SELECT * FROM activities";
@@ -88,9 +88,8 @@ public class ListaAtividadesFragment extends Fragment {
 
         ImageView new_activity = view.findViewById(R.id.new_activity);
         new_activity.setOnClickListener(view1 -> {
-            FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.nav_host_fragment_content_main, new NewActivityFragment()).commit();
+            Intent intent = new Intent(getActivity(), NewActivity.class);
+            startActivity(intent);
         });
 
         return view;

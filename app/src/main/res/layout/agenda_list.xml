@@ -36,7 +36,7 @@
         <TextView
             android:layout_width="190dp"
             android:layout_height="wrap_content"
-            android:text="Às"
+            android:text="às"
             android:layout_weight="1" />
 
         <TextView

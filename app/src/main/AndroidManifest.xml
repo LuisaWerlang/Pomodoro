@@ -14,6 +14,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Pomodoro">
         <activity
+            android:name=".NewActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".NewAgenda"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
