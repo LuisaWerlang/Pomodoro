@@ -11,6 +11,7 @@
     tools:context=".NewActivity">
 
     <TextView
+        android:id="@+id/tv_newActivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/nova_atividade"
@@ -30,7 +31,7 @@
         android:id="@+id/activity_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textCapWords"
+        android:inputType="textCapSentences"
         android:autofillHints=""
         tools:ignore="LabelFor" />
 
@@ -46,25 +47,24 @@
         android:id="@+id/activity_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textCapWords"
+        android:inputType="textCapSentences"
         android:autofillHints=""
         tools:ignore="LabelFor" />
 
-    <TextView
-        android:id="@+id/tv_time"
+    <LinearLayout
+        android:id="@+id/ll_concludeActivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:textColor="@color/black"
-        android:text="@string/tempo" />
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/activity_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:autofillHints=""
-        tools:ignore="LabelFor" />
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Concluir atividade"/>
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/save_activity"
@@ -73,6 +73,22 @@
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
         android:text="@string/salvar" />
+
+    <LinearLayout
+        android:id="@+id/ll_deleteActivity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/delete_activity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="50dp"
+            android:text="@string/excluir" />
+
+    </LinearLayout>
 
 </LinearLayout>
 

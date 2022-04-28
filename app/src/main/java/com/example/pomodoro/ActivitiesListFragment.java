@@ -3,12 +3,21 @@ package com.example.pomodoro;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
+
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
+import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.StrikethroughSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -23,7 +32,7 @@ import java.util.Map;
  * Use the {@link ActivitiesListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ActivitiesListFragment extends Fragment {
+public class ActivitiesListFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -32,7 +41,7 @@ public class ActivitiesListFragment extends Fragment {
     private DatabaseHelper helper;
     private List<Map<String, Object>> activities;
     private final String[] from = {"name", "description"};//, "concluido"};
-    private final int[] to = {R.id.nome, R.id.descricao};//, R.id.checkbox};
+    private final int[] to = {R.id.name, R.id.description};//, R.id.checkbox};
 
     public ActivitiesListFragment() {
         // Required empty public constructor
@@ -81,10 +90,7 @@ public class ActivitiesListFragment extends Fragment {
 
         SimpleAdapter adapter = new SimpleAdapter(getActivity(), activities, R.layout.listagem, from, to);
         activities_list.setAdapter(adapter);
-
-        activities_list.setOnItemClickListener((adapterView, view12, i, l) -> {
-
-        });
+        activities_list.setOnItemClickListener(this);
 
         ImageView new_activity = view.findViewById(R.id.new_activity);
         new_activity.setOnClickListener(view1 -> {
@@ -95,6 +101,20 @@ public class ActivitiesListFragment extends Fragment {
         return view;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+        Map<String, Object> item = activities.get(position);
+        String name = Html.fromHtml(String.valueOf(item.get("name")), Html.FROM_HTML_MODE_LEGACY).toString();
+
+        Intent intent = new Intent(getActivity(), NewActivity.class);
+        intent.putExtra("id", (int) item.get("id"));
+        intent.putExtra("name", name);
+        intent.putExtra("description", (String) item.get("description"));
+        intent.putExtra("concluded", (int) item.get("concluded"));
+        startActivity(intent);
+    }
+
     private List<Map<String, Object>> listActivities(String query) {
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -102,13 +122,17 @@ public class ActivitiesListFragment extends Fragment {
         activities = new ArrayList<>();
         for(int i=0; i<cursor.getCount(); i++) {
             Map<String, Object> item = new HashMap<>();
+            int id = cursor.getInt(0);
             String name = cursor.getString(1);
             String description = cursor.getString(2);
             int concluded = cursor.getInt(3);
-            String time = cursor.getString(4);
-            item.put("name", name);
+            SpannableString textoRiscado = new SpannableString(name);
+            if(concluded==1) {
+                textoRiscado.setSpan(new StrikethroughSpan(), 0, textoRiscado.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            }
+            item.put("id", id);
+            item.put("name", textoRiscado);
             item.put("description", description);
-            item.put("time", time);
             item.put("concluded", concluded);
             activities.add(item);
             cursor.moveToNext();

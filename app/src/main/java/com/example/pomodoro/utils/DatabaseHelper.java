@@ -25,8 +25,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                             "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
                             "name TEXT, " +
                             "description TEXT, " +
-                            "concluded INTEGER, " +
-                            "time TEXT);");
+                            "concluded INTEGER);");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS settings (" +
                 "id INTEGER PRIMARY KEY NOT NULL, " +
@@ -54,6 +53,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE IF NOT EXISTS answer (" +
                 "id INTEGER PRIMARY KEY NOT NULL, " +
+                "user_id INTEGER, " +
                 "user TEXT," +
                 "question TEXT," +
                 "CT INTEGER," +
