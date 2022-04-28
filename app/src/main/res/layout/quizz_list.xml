@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_question"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Pergunta" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="CT"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="C"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="ND"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="D"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="DT"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            tools:ignore="UselessParent">
+
+            <RadioButton
+                android:id="@+id/radioButton_ct"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:checked="false" />
+
+            <RadioButton
+                android:id="@+id/radioButton_c"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:checked="false" />
+
+            <RadioButton
+                android:id="@+id/radioButton_nd"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:checked="false" />
+
+            <RadioButton
+                android:id="@+id/radioButton_d"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:checked="false" />
+
+            <RadioButton
+                android:id="@+id/radioButton_dt"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:checked="false" />
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/et_observation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="Deixe seu comentário"
+        android:inputType="textAutoComplete"
+        android:autofillHints="" />
+
+</LinearLayout>
+
+
