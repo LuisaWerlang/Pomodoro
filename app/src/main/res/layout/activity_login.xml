@@ -39,6 +39,7 @@
         android:layout_marginTop="5dp"
         android:autofillHints=""
         tools:ignore="LabelFor"
+        android:hint="Digite seu usuário"
         android:inputType="text" />
 
     <TextView
@@ -54,6 +55,7 @@
         android:layout_height="wrap_content"
         android:inputType="numberPassword"
         android:autofillHints=""
+        android:hint="Digite sua senha"
         tools:ignore="LabelFor" />
 
     <Button

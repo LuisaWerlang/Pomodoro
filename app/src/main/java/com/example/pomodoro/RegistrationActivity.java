@@ -1,7 +1,6 @@
 package com.example.pomodoro;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,14 +9,14 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.amazonaws.ClientConfiguration;
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
+import com.amazonaws.mobileconnectors.dynamodbv2.document.Table;
+import com.amazonaws.mobileconnectors.dynamodbv2.document.datatype.Document;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.example.pomodoro.utils.DatabaseHelper;
-
 import java.util.Objects;
 
 public class RegistrationActivity extends AppCompatActivity {
@@ -55,7 +54,7 @@ public class RegistrationActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Informe todos os dados para o cadastro!", Toast.LENGTH_SHORT).show();
         } else {
             SQLiteDatabase db = helper.getReadableDatabase();
-            String query = "SELECT * FROM user WHERE user = " + user + " AND password = " + password;
+            String query = "SELECT * FROM user WHERE user = '"+user+"' AND password = '"+password+"'";
             Cursor cursor = db.rawQuery(query, null);
             if (cursor.getCount() > 0) {
                 Toast.makeText(getApplicationContext(), "Já existe usuário cadastrado! Faça o Login para continuar.", Toast.LENGTH_SHORT).show();
@@ -82,7 +81,6 @@ public class RegistrationActivity extends AppCompatActivity {
                             new ClientConfiguration());
                     Thread thread = new Thread(save(result));
                     thread.start();
-                    onBack();
                 } else {
                     Toast.makeText(this, "Erro ao salvar!", Toast.LENGTH_SHORT).show();
                 }
@@ -92,7 +90,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
     private Runnable save(long result) {
         return () -> {
-            /*
+
             Table table = Table.loadTable(client,"user");
 
             Document document = new Document();
@@ -101,11 +99,10 @@ public class RegistrationActivity extends AppCompatActivity {
             document.put("password",password);
             try {
                 table.putItem(document);
+                onBack();
             } catch (Exception exp) {
                 exp.printStackTrace();
             }
-
-             */
         };
     }
 

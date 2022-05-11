@@ -2,6 +2,7 @@ package com.example.pomodoro;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
@@ -42,8 +43,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        View headerView = navigationView.getHeaderView(0);
         String user_name = getIntent().getStringExtra("user_name");
-        TextView txt_user = findViewById(R.id.txt_user);
+        TextView txt_user = headerView.findViewById(R.id.main_txt_user);
         txt_user.setText(user_name);
 
         if (getIntent().hasExtra("settings_sound")) {

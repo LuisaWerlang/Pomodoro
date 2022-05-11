@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Informe os dados para o login!", Toast.LENGTH_SHORT).show();
         } else {
             SQLiteDatabase db = helper.getReadableDatabase();
-            String query = "SELECT * FROM user WHERE user = "+user+" AND password = "+password;
+            String query = "SELECT * FROM user WHERE user = '"+user+"' AND password = '"+password+"'";
             Cursor cursor = db.rawQuery(query, null);
             if(cursor.getCount() == 0) {
                 Toast.makeText(getApplicationContext(), "Email e senha incorretos! Verifique e tente novamente", Toast.LENGTH_SHORT).show();
