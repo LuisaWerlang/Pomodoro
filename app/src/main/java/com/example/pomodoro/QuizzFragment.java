@@ -1,6 +1,8 @@
 package com.example.pomodoro;
 
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
@@ -119,12 +121,16 @@ public class QuizzFragment extends Fragment {
         long result;
         ContentValues values;
 
+        SharedPreferences settings = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+        String user_name = settings.getString("user_name", "");
+        int user_id = settings.getInt("user_id",0);
+
         for(int i=0;i<adapter.getCount();i++) {
             int answer_option = adapter.getItem(i).answer_option;
             if (answer_option != 0) {
                 values = new ContentValues();
-                values.put("user", "");
-                values.put("user_id", "");
+                values.put("user", user_name);
+                values.put("user_id", user_id);
                 values.put("question", adapter.getItem(i).question_name);
                 values.put("CT", 2);
                 values.put("C", 2);

@@ -2,6 +2,8 @@ package com.example.pomodoro;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.TextView;
+
 import com.google.android.material.navigation.NavigationView;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.FragmentTransaction;
@@ -39,6 +41,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        String user_name = getIntent().getStringExtra("user_name");
+        TextView txt_user = findViewById(R.id.txt_user);
+        txt_user.setText(user_name);
 
         if (getIntent().hasExtra("settings_sound")) {
             SettingsFragment fragment = new SettingsFragment();
