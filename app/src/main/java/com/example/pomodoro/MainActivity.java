@@ -1,6 +1,7 @@
 package com.example.pomodoro;
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -79,6 +80,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     .replace(R.id.nav_host_fragment_content_main, fragment)
                     .commit();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
     }
 
     @Override
