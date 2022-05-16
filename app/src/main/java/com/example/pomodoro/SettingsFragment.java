@@ -184,14 +184,14 @@ public class SettingsFragment extends Fragment {
             SQLiteDatabase db = helper.getWritableDatabase();
 
             ContentValues values = new ContentValues();
-            values.put("tempo_pomodoro", Integer.parseInt(pomodoro));
-            values.put("tempo_pausa_curta", Integer.parseInt(short_break));
-            values.put("tempo_pausa_longa", Integer.parseInt(long_break));
-            values.put("som_alarme", alarm_sound);
-            values.put("som_relogio", clock_sound);
+            values.put("pomodoro_time", Integer.parseInt(pomodoro));
+            values.put("short_break_time", Integer.parseInt(short_break));
+            values.put("long_break_time", Integer.parseInt(long_break));
+            values.put("alarm_sound", alarm_sound);
+            values.put("clock_sound", clock_sound);
 
             String[] where = new String[]{"1"};
-            long result = db.update("configs", values, "id = ?", where);
+            long result = db.update("settings", values, "id = ?", where);
             if (result != -1) {
                 Toast.makeText(getActivity(), "Registro salvo com sucesso!", Toast.LENGTH_SHORT).show();
             } else {

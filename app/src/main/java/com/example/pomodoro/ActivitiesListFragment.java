@@ -18,14 +18,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+
+import com.example.pomodoro.utils.Activities;
+import com.example.pomodoro.utils.ActivityAdapter;
 import com.example.pomodoro.utils.DatabaseHelper;
+import com.example.pomodoro.utils.Questions;
+import com.example.pomodoro.utils.QuizzAdapter;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,10 +46,8 @@ public class ActivitiesListFragment extends Fragment implements AdapterView.OnIt
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private DatabaseHelper helper;
-    private List<Map<String, Object>> activities;
-    private final String[] from = {"name", "description"};//, "concluido"};
-    private final int[] to = {R.id.name, R.id.description};//, R.id.checkbox};
+    private List<Activities> activities;
+    private ArrayAdapter<Activities> adapter;
 
     public ActivitiesListFragment() {
         // Required empty public constructor
@@ -81,14 +87,12 @@ public class ActivitiesListFragment extends Fragment implements AdapterView.OnIt
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_activities_list, container, false);
 
-        helper = new DatabaseHelper(getActivity());
-        String query = "SELECT * FROM activities";
-        activities = listActivities(query);
-
         // Aqui você instancia sua ListView
         ListView activities_list = view.findViewById(R.id.list_view_atividades);
 
-        SimpleAdapter adapter = new SimpleAdapter(getActivity(), activities, R.layout.listagem, from, to);
+        Activities items = new Activities(getActivity());
+        activities = items.listActivities(getActivity());
+        adapter = new ActivityAdapter(Objects.requireNonNull(getActivity()), R.layout.listagem, activities);
         activities_list.setAdapter(adapter);
         activities_list.setOnItemClickListener(this);
 
@@ -104,46 +108,18 @@ public class ActivitiesListFragment extends Fragment implements AdapterView.OnIt
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-        Map<String, Object> item = activities.get(position);
-        String name = Html.fromHtml(String.valueOf(item.get("name")), Html.FROM_HTML_MODE_LEGACY).toString();
+        Activities item = activities.get(position);
 
         Intent intent = new Intent(getActivity(), NewActivity.class);
-        intent.putExtra("id", (int) item.get("id"));
-        intent.putExtra("name", name);
-        intent.putExtra("description", (String) item.get("description"));
-        intent.putExtra("concluded", (int) item.get("concluded"));
+        intent.putExtra("id", (int) item.getId());
+        intent.putExtra("name", item.getName());
+        intent.putExtra("description", (String) item.getDescription());
+        intent.putExtra("concluded", (int) item.getConcluded());
         startActivity(intent);
-    }
-
-    private List<Map<String, Object>> listActivities(String query) {
-        SQLiteDatabase db = helper.getReadableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        cursor.moveToFirst();
-        activities = new ArrayList<>();
-        for(int i=0; i<cursor.getCount(); i++) {
-            Map<String, Object> item = new HashMap<>();
-            int id = cursor.getInt(0);
-            String name = cursor.getString(1);
-            String description = cursor.getString(2);
-            int concluded = cursor.getInt(3);
-            SpannableString textoRiscado = new SpannableString(name);
-            if(concluded==1) {
-                textoRiscado.setSpan(new StrikethroughSpan(), 0, textoRiscado.length(), Spanned.SPAN_INCLUSIVE_INCLUSIVE);
-            }
-            item.put("id", id);
-            item.put("name", textoRiscado);
-            item.put("description", description);
-            item.put("concluded", concluded);
-            activities.add(item);
-            cursor.moveToNext();
-        }
-        cursor.close();
-        return activities;
     }
 
     @Override
     public void onDestroy() {
-        helper.close();
         super.onDestroy();
     }
 }

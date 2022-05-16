@@ -60,7 +60,7 @@ public class NewAgenda extends AppCompatActivity {
         helper = new DatabaseHelper(this);
 
         Utils utils = new Utils(this);
-        String query = "SELECT * FROM activities";
+        String query = "SELECT * FROM activities WHERE concluded=2";
         activities = utils.listActivities(query, activities);
 
         tvActivity = findViewById(R.id.tvActivity);

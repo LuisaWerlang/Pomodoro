@@ -1,6 +1,7 @@
 package com.example.pomodoro;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +40,7 @@ public class PomodoroFragment extends Fragment {
     private DatabaseHelper helper;
     private List<String> activities;
     private Spinner tvActivity;
+    private ImageButton new_activity;
 
     public PomodoroFragment() {
         // Required empty public constructor
@@ -116,7 +119,7 @@ public class PomodoroFragment extends Fragment {
         }
 
         helper = new DatabaseHelper(getActivity());
-        String query = "SELECT * FROM activities";
+        String query = "SELECT * FROM activities WHERE concluded=2";
         activities = utils.listActivities(query, activities);
         utils.close();
 
@@ -136,7 +139,15 @@ public class PomodoroFragment extends Fragment {
             }
         });
 
+        new_activity = view.findViewById(R.id.new_activity);
+        new_activity.setOnClickListener(view1 -> newActivity());
+
         return view;
+    }
+
+    public void newActivity() {
+        Intent intent = new Intent(getActivity(), NewActivity.class);
+        startActivity(intent);
     }
 
     public void startChronometer(TextView tv, int alarm_sound) {

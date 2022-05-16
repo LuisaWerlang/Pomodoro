@@ -18,14 +18,37 @@
         android:textSize="20sp"
         android:textStyle="bold" />
 
-    <Spinner
-        android:id="@+id/tvActivity"
+    <TextView
+        android:id="@+id/tv_activity"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/spinner_shape"
-        android:textColor="@color/red" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/black"
+        android:text="@string/atividade" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/tvActivity"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:layout_weight="5"
+            android:background="@drawable/spinner_shape"
+            android:textColor="@color/red" />
+
+        <ImageButton
+            android:id="@+id/new_activity"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_baseline_add_24"
+            tools:ignore="ContentDescription,RtlHardcoded" />
+    </LinearLayout>
 
     <!--    <TextView-->
     <!--        android:id="@+id/tvActivity"-->

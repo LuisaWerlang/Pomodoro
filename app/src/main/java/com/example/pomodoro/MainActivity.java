@@ -1,5 +1,7 @@
 package com.example.pomodoro;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -87,6 +89,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menu) {
+        if (menu.getItemId() == R.id.action_exit) {
+            exit();
+            return true;
+        }
+        return false;
+    }
+
+    public void exit() {
+        SharedPreferences settings = getSharedPreferences("UserInfo", MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("user_name", "");
+        editor.putInt("user_id", 0);
+        editor.apply();
+
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 
     @Override
