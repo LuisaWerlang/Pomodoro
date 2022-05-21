@@ -164,12 +164,14 @@ public class AgendaFragment extends Fragment implements OnDateSelectedListener, 
         String agenda_hour = (String) item.get("hour");
         String agenda_hour_notify = (String) item.get("hour_notify");
         String activity_name = (String) item.get("activity_name");
+        Long eventID = (long) item.get("eventID");
         Intent intent = new Intent(getActivity(), NewAgenda.class);
         intent.putExtra("id", agenda_id);
         intent.putExtra("date", agenda_date);
         intent.putExtra("hour", agenda_hour);
         intent.putExtra("hour_notify", agenda_hour_notify);
         intent.putExtra("activity_name", activity_name);
+        intent.putExtra("eventID", eventID);
         startActivity(intent);
     }
 }

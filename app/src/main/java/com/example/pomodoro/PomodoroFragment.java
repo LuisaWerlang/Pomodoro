@@ -120,7 +120,7 @@ public class PomodoroFragment extends Fragment {
 
         helper = new DatabaseHelper(getActivity());
         String query = "SELECT * FROM activities WHERE concluded=2";
-        activities = utils.listActivities(query, activities);
+        activities = utils.listActivities(query);
         utils.close();
 
         tvActivity = view.findViewById(R.id.tvActivity);

@@ -4,9 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-
 import com.prolificinteractive.materialcalendarview.CalendarDay;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -26,9 +24,6 @@ public class Utils {
     private String clock_name;
 
     private int agenda_id;
-    private String agenda_date;
-    private String agenda_hour;
-    private String agenda_hour_notify;
     private List<Map<String, Object>> agendas;
     private List<CalendarDay> calendarDays;
 
@@ -89,15 +84,13 @@ public class Utils {
                 String agendaHourNotify = sdf.format(hour_notify);
 
                 this.agenda_id = cursor.getInt(0);
-                this.agenda_date = agendaDate;
-                this.agenda_hour = agendaHour;
-                this.agenda_hour_notify = agendaHourNotify;
                 Map<String, Object> item = new HashMap<>();
                 item.put("id", this.agenda_id);
-                item.put("date", this.agenda_date);
-                item.put("hour", this.agenda_hour);
-                item.put("hour_notify", this.agenda_hour_notify);
+                item.put("date", agendaDate);
+                item.put("hour", agendaHour);
+                item.put("hour_notify", agendaHourNotify);
                 item.put("activity_name", cursor.getString(4));
+                item.put("eventID", cursor.getLong(5));
                 agendas.add(item);
 
                 sdf = new SimpleDateFormat("dd");
@@ -115,11 +108,11 @@ public class Utils {
         }
     }
 
-    public List<String> listActivities(String query, List<String> activities) {
+    public List<String> listActivities(String query) {
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
-        activities = new ArrayList<>();
+        List<String> activities = new ArrayList<>();
         activities.add("Selecione");
         for(int i=0; i<cursor.getCount(); i++) {
             String nome = cursor.getString(1);

@@ -45,7 +45,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "date int, " +
                 "hour int, " +
                 "hour_notify int, " +
-                "activity_name TEXT);");
+                "activity_name TEXT, " +
+                "eventID int);");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS question (" +
                 "id INTEGER PRIMARY KEY NOT NULL, " +

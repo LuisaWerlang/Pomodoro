@@ -1,19 +1,10 @@
 package com.example.pomodoro;
 
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
-
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-
-import android.text.Html;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.StrikethroughSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,18 +12,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
-
 import com.example.pomodoro.utils.Activities;
 import com.example.pomodoro.utils.ActivityAdapter;
-import com.example.pomodoro.utils.DatabaseHelper;
-import com.example.pomodoro.utils.Questions;
-import com.example.pomodoro.utils.QuizzAdapter;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -47,7 +29,6 @@ public class ActivitiesListFragment extends Fragment implements AdapterView.OnIt
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private List<Activities> activities;
-    private ArrayAdapter<Activities> adapter;
 
     public ActivitiesListFragment() {
         // Required empty public constructor
@@ -92,7 +73,7 @@ public class ActivitiesListFragment extends Fragment implements AdapterView.OnIt
 
         Activities items = new Activities(getActivity());
         activities = items.listActivities(getActivity());
-        adapter = new ActivityAdapter(Objects.requireNonNull(getActivity()), R.layout.listagem, activities);
+        ArrayAdapter<Activities> adapter = new ActivityAdapter(Objects.requireNonNull(getActivity()), R.layout.listagem, activities);
         activities_list.setAdapter(adapter);
         activities_list.setOnItemClickListener(this);
 
@@ -111,10 +92,10 @@ public class ActivitiesListFragment extends Fragment implements AdapterView.OnIt
         Activities item = activities.get(position);
 
         Intent intent = new Intent(getActivity(), NewActivity.class);
-        intent.putExtra("id", (int) item.getId());
+        intent.putExtra("id", item.getId());
         intent.putExtra("name", item.getName());
-        intent.putExtra("description", (String) item.getDescription());
-        intent.putExtra("concluded", (int) item.getConcluded());
+        intent.putExtra("description", item.getDescription());
+        intent.putExtra("concluded", item.getConcluded());
         startActivity(intent);
     }
 

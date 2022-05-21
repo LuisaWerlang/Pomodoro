@@ -4,10 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
+import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -30,8 +34,9 @@ public class NewAgenda extends AppCompatActivity {
     private DatabaseHelper helper;
     private EditText et_date, et_hour, et_notify;
     private int id;
+    private long eventId;
     private Spinner tvActivity;
-    private List<String> activities;
+    private String activity_name;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -43,6 +48,7 @@ public class NewAgenda extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
 
         id = getIntent().getIntExtra("id", 0);
+        eventId = getIntent().getLongExtra("eventID", 0);
         String date = getIntent().getStringExtra("date");
         String hour = getIntent().getStringExtra("hour");
         String hour_notify = getIntent().getStringExtra("hour_notify");
@@ -61,7 +67,7 @@ public class NewAgenda extends AppCompatActivity {
 
         Utils utils = new Utils(this);
         String query = "SELECT * FROM activities WHERE concluded=2";
-        activities = utils.listActivities(query, activities);
+        List<String> activities = utils.listActivities(query);
 
         tvActivity = findViewById(R.id.tvActivity);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, activities);
@@ -119,7 +125,7 @@ public class NewAgenda extends AppCompatActivity {
         String date = et_date.getText().toString();
         String hour = et_hour.getText().toString();
         String hour_notify = et_notify.getText().toString();
-        String activity_name = (String) tvActivity.getSelectedItem();
+        activity_name = (String) tvActivity.getSelectedItem();
 
         if ((date.equals(""))||(hour.equals(""))||(hour_notify.equals(""))||(tvActivity.getSelectedItem().equals("Selecione")))
             Toast.makeText(this, "Informe todos os campos para salvar", Toast.LENGTH_SHORT).show();
@@ -134,29 +140,87 @@ public class NewAgenda extends AppCompatActivity {
                 long finalHour = Objects.requireNonNull(hourFormat.parse(hour)).getTime() / 1000;
                 long finalHourNotify = Objects.requireNonNull(hourFormat.parse(hour_notify)).getTime() / 1000;
 
-                ContentValues values = new ContentValues();
-                values.put("date", finalDate);
-                values.put("hour", finalHour);
-                values.put("hour_notify", finalHourNotify);
-                values.put("activity_name", activity_name);
+                if(finalHourNotify > finalHour) {
+                    Toast.makeText(this, "A hora da notificação deve ser anterior a hora do evento!", Toast.LENGTH_SHORT).show();
+                } else {
+                    ContentValues values = new ContentValues();
+                    values.put("date", finalDate);
+                    values.put("hour", finalHour);
+                    values.put("hour_notify", finalHourNotify);
+                    values.put("activity_name", activity_name);
+                    long idEvent = onScheduleAgenda(finalDate, finalHour, finalHourNotify);
+                    values.put("eventID", idEvent);
 
-                long result;
-                if (id != 0) {
-                    String[] where = new String[]{String.valueOf(id)};
-                    result = db.update("agenda", values, "id = ?", where);
-                } else {
-                    result = db.insert("agenda", null, values);
-                }
-                if (result != -1) {
-                    Toast.makeText(this, "Registro salvo com sucesso!", Toast.LENGTH_SHORT).show();
-                    onBack();
-                } else {
-                    Toast.makeText(this, "Erro ao salvar!", Toast.LENGTH_SHORT).show();
+                    long result;
+                    if (id != 0) {
+                        String[] where = new String[]{String.valueOf(id)};
+                        result = db.update("agenda", values, "id = ?", where);
+                    } else {
+                        result = db.insert("agenda", null, values);
+                    }
+                    if (result != -1) {
+                        Toast.makeText(this, "Registro salvo com sucesso!", Toast.LENGTH_SHORT).show();
+                        onBack();
+                    } else {
+                        Toast.makeText(this, "Erro ao salvar!", Toast.LENGTH_SHORT).show();
+                    }
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    public long onScheduleAgenda(long finalDate, long finalHour, long finalHourNotify) {
+        Date date = new Date(finalDate * 1000L);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd");
+        int agendaDay = Integer.parseInt(sdf.format(date));
+        sdf = new SimpleDateFormat("MM");
+        int agendaMonth = Integer.parseInt(sdf.format(date));
+        sdf = new SimpleDateFormat("yyyy");
+        int agendaYear = Integer.parseInt(sdf.format(date));
+        Date hour = new Date(finalHour * 1000L);
+        Date hour_notify = new Date(finalHourNotify * 1000L);
+        sdf = new SimpleDateFormat("HH");
+        int agendaHour = Integer.parseInt(sdf.format(hour));
+        int agendaHourNotify = Integer.parseInt(sdf.format(hour_notify));
+        sdf = new SimpleDateFormat("mm");
+        int agendaMinute = Integer.parseInt(sdf.format(hour));
+        int agendaMinuteNotify = Integer.parseInt(sdf.format(hour_notify));
+        int minutesNotify = (agendaHourNotify*60)+agendaMinuteNotify;
+        int minutosHour = (agendaHour*60)+agendaMinute;
+
+        long calID = 3;
+        Calendar beginTime = Calendar.getInstance();
+        beginTime.set(agendaYear, (agendaMonth-1), agendaDay, agendaHour, agendaMinute);
+        long startMillis = beginTime.getTimeInMillis();
+
+        ContentResolver cr = getContentResolver();
+        ContentValues values = new ContentValues();
+        values.put(CalendarContract.Events.DTSTART, startMillis);
+        values.put(CalendarContract.Events.DTEND, startMillis);
+        values.put(CalendarContract.Events.TITLE, "Pomodoro");
+        values.put(CalendarContract.Events.DESCRIPTION, activity_name);
+        values.put(CalendarContract.Events.CALENDAR_ID, calID);
+        values.put(CalendarContract.Events.EVENT_TIMEZONE, Calendar.getInstance()
+                .getTimeZone().getID());
+        Uri uri;
+        if(eventId != 0) {
+            uri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, eventId);
+            getContentResolver().update(uri, values, null, null);
+        } else {
+            uri = cr.insert(CalendarContract.Events.CONTENT_URI, values);
+            eventId = Long.parseLong(uri.getLastPathSegment());
+        }
+
+        ContentValues newvalues = new ContentValues();
+        newvalues.put(CalendarContract.Reminders.MINUTES, (minutosHour-minutesNotify));
+        newvalues.put(CalendarContract.Reminders.EVENT_ID, eventId);
+        newvalues.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
+        cr.insert(CalendarContract.Reminders.CONTENT_URI, newvalues);
+
+        return eventId;
     }
 
     public void onDeleteAgenda() {
@@ -175,6 +239,9 @@ public class NewAgenda extends AppCompatActivity {
         long result = db.delete("agenda", "id = ?", where);
         if (result != -1) {
             Toast.makeText(this, "Registro excluído com sucesso!", Toast.LENGTH_SHORT).show();
+            ContentResolver cr = getContentResolver();
+            Uri deleteUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, eventId);
+            cr.delete(deleteUri, null, null);
             onBack();
         } else {
             Toast.makeText(this, "Erro ao excluir!", Toast.LENGTH_SHORT).show();

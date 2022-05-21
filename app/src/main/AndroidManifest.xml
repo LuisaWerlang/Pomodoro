@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
 
     <application
         android:allowBackup="false"
@@ -47,10 +49,6 @@
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:theme="@style/Theme.Pomodoro.NoActionBar">
-
         </activity>
-
-        <service android:name=".ServiceNotification" />
     </application>
-
 </manifest>
