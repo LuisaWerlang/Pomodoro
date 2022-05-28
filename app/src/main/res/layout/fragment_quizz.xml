@@ -30,6 +30,43 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:text="Usando Pomodoro?"/>
+
+        <RadioGroup
+            android:id="@+id/radioGroupPomodoro"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioButton_sim"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:text="Sim"
+                android:checked="false" />
+
+            <RadioButton
+                android:id="@+id/radioButton_nao"
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:text="Não"
+                android:checked="false" />
+
+            </RadioGroup>
+    </LinearLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -62,7 +62,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "ND INTEGER," +
                 "D INTEGER," +
                 "DT INTEGER," +
-                "observation TEXT)");
+                "observation TEXT, " +
+                "pomodoro INTEGER);"); //1-com pomodoro, 2-sem pomodoro
 
         String sql2 = "INSERT INTO question " +
                 "(id, question) " +
