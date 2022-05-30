@@ -12,6 +12,6 @@
         android:layout_height="match_parent"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:text="Grupos" />
+        android:text="@string/grupos" />
 
 </FrameLayout>

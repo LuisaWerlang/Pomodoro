@@ -9,10 +9,10 @@
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/nome"
-        android:textSize="18sp"
         android:layout_marginTop="20dp"
+        android:text="@string/nome"
         android:textColor="@color/black"
+        android:textSize="18sp"
         android:textStyle="bold" />
 
     <TextView
@@ -20,6 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/descri_o"
+        android:textColor="@color/black"
         android:textSize="13sp" />
 
 </LinearLayout>

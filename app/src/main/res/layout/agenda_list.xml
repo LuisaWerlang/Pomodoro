@@ -15,36 +15,36 @@
             android:id="@+id/activity"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:text="Atividade"
             android:layout_weight="1"
+            android:text="@string/atividade"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="190dp"
             android:layout_height="wrap_content"
-            android:text="Em"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:text="@string/em" />
 
         <TextView
             android:id="@+id/date"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:text="Date"
             android:layout_weight="1"
+            android:text="@string/date"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="190dp"
             android:layout_height="wrap_content"
-            android:text="às"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:text="@string/as" />
 
         <TextView
             android:id="@+id/hour"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:text="Hora"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:text="@string/hora" />
 
     </LinearLayout>
 
@@ -54,18 +54,18 @@
         android:layout_marginStart="186dp"
         android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:text="Notificação às"
-        android:layout_weight="1" />
+        <TextView
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/notificacoes" />
 
-    <TextView
-        android:id="@+id/hour_notify"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:text="Hora"
-        android:layout_weight="1" />
+        <TextView
+            android:id="@+id/hour_notify"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/hora" />
 
     </LinearLayout>
 

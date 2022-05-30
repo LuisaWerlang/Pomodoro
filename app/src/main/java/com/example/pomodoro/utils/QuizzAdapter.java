@@ -11,8 +11,11 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
+
 import com.example.pomodoro.R;
+
 import java.util.List;
 
 public class QuizzAdapter extends ArrayAdapter<Questions> {
@@ -50,19 +53,18 @@ public class QuizzAdapter extends ArrayAdapter<Questions> {
         repositorio.et_observation.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start,
-                                          int count, int after)
-            {
+                                          int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start,
-                                      int before, int count)
-            {
-                if(s.toString().length()>0)
+                                      int before, int count) {
+                if (s.toString().length() > 0)
                     repositorio.questions.setAnswer_observation(s.toString());
             }
+
             @Override
-            public void afterTextChanged(Editable s)
-            {
+            public void afterTextChanged(Editable s) {
             }
         });
 

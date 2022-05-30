@@ -1,6 +1,7 @@
 package com.example.pomodoro;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.example.pomodoro.utils.DatabaseHelper;
 
 public class LoginActivity extends AppCompatActivity {
@@ -23,10 +25,12 @@ public class LoginActivity extends AppCompatActivity {
 
         SharedPreferences settings = getSharedPreferences("UserInfo", MODE_PRIVATE);
         String user_name = settings.getString("user_name", "");
-        int user_id = settings.getInt("user_id",0);
-        if( (!user_name.equals("")) && (user_id != 0)) {
+        String user = settings.getString("user", "");
+        int user_id = settings.getInt("user_id", 0);
+        if ((!user_name.equals("")) && (user_id != 0)) {
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra("user_name", user_name);
+            intent.putExtra("user", user);
             intent.putExtra("user_id", user_id);
             startActivity(intent);
         }
@@ -49,17 +53,18 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Informe os dados para o login!", Toast.LENGTH_SHORT).show();
         } else {
             SQLiteDatabase db = helper.getReadableDatabase();
-            String query = "SELECT * FROM user WHERE user = '"+user+"' AND password = '"+password+"'";
+            String query = "SELECT * FROM user WHERE user = '" + user + "' AND password = '" + password + "'";
             Cursor cursor = db.rawQuery(query, null);
-            if(cursor.getCount() == 0) {
+            if (cursor.getCount() == 0) {
                 Toast.makeText(getApplicationContext(), "Email e senha incorretos! Verifique e tente novamente", Toast.LENGTH_SHORT).show();
             } else {
                 String user_name = "";
                 int user_id = 0;
                 cursor.moveToFirst();
-                for(int i=0; i<cursor.getCount(); i++) {
+                for (int i = 0; i < cursor.getCount(); i++) {
                     user_id = cursor.getInt(0);
-                    user_name = cursor.getString(1);
+                    user = cursor.getString(1);
+                    user_name = cursor.getString(3);
                     cursor.moveToNext();
                 }
                 cursor.close();
@@ -67,11 +72,13 @@ public class LoginActivity extends AppCompatActivity {
                 SharedPreferences settings = getSharedPreferences("UserInfo", MODE_PRIVATE);
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putString("user_name", user_name);
+                editor.putString("user", user);
                 editor.putInt("user_id", user_id);
                 editor.apply();
 
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.putExtra("user_name", user_name);
+                intent.putExtra("user", user);
                 intent.putExtra("user_id", user_id);
                 startActivity(intent);
             }

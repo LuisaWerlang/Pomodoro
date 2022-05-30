@@ -19,7 +19,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("CREATE TABLE IF NOT EXISTS user (" +
                 "id INTEGER PRIMARY KEY NOT NULL," +
                 "user TEXT," +
-                "password TEXT)");
+                "password TEXT, " +
+                "user_name TEXT);");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS activities (" +
                             "id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +

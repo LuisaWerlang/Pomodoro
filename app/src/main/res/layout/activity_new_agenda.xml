@@ -14,17 +14,16 @@
         android:id="@+id/tv_agenda"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:text="@string/cadastro_de_nova_agenda" />
+        android:text="@string/agendar_pomodoro_cadastro_de_nova_agenda" />
 
     <TextView
+        style="@style/textView"
         android:id="@+id/tv_activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:textColor="@color/black"
         android:text="@string/atividade" />
 
     <Spinner
@@ -36,11 +35,10 @@
 <!--android:background="@drawable/spinner_shape"-->
 
     <TextView
+        style="@style/textView"
         android:id="@+id/tv_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:textColor="@color/black"
         android:text="@string/data" />
 
     <EditText
@@ -52,11 +50,10 @@
         tools:ignore="LabelFor" />
 
     <TextView
+        style="@style/textView"
         android:id="@+id/tv_hour"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:textColor="@color/black"
         android:text="@string/hora" />
 
     <EditText
@@ -81,11 +78,10 @@
         tools:ignore="RtlHardcoded" />
 
     <TextView
+        style="@style/textView"
         android:id="@+id/tv_notify"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:textColor="@color/black"
         android:text="@string/hora_para_notificacao" />
 
     <EditText

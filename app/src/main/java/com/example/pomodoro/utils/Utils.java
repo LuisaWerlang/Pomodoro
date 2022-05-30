@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
 import com.prolificinteractive.materialcalendarview.CalendarDay;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,7 +44,7 @@ public class Utils {
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
-        for(int i=0; i<cursor.getCount(); i++) {
+        for (int i = 0; i < cursor.getCount(); i++) {
             this.pomodoro_time = cursor.getInt(1);
             this.short_break_time = cursor.getInt(2);
             this.long_break_time = cursor.getInt(3);
@@ -114,7 +116,7 @@ public class Utils {
         cursor.moveToFirst();
         List<String> activities = new ArrayList<>();
         activities.add("Selecione");
-        for(int i=0; i<cursor.getCount(); i++) {
+        for (int i = 0; i < cursor.getCount(); i++) {
             String nome = cursor.getString(1);
             activities.add(nome);
             cursor.moveToNext();

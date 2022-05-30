@@ -5,19 +5,22 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
+
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.pomodoro.utils.DatabaseHelper;
 import com.example.pomodoro.utils.Utils;
+
 import java.util.List;
 
 /**
@@ -33,14 +36,12 @@ public class PomodoroFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
 
     private Button start;
-    private int pomodoro_time;
+    private int pomodoro_time, short_break_time, long_break_time;
     private TextView tv;
     private MediaPlayer mp;
     private int pomodoro_amount = 0;
     private DatabaseHelper helper;
-    private List<String> activities;
     private Spinner tvActivity;
-    private ImageButton new_activity;
 
     public PomodoroFragment() {
         // Required empty public constructor
@@ -85,10 +86,12 @@ public class PomodoroFragment extends Fragment {
         Utils utils = new Utils(getActivity());
         utils.findSettings();
         pomodoro_time = utils.getPomodoroTime();
+        short_break_time = utils.getShortBreakTime();
+        long_break_time = utils.getLongBreakTime();
         String alarm_name = utils.getAlarmName();
 
         tv = view.findViewById(R.id.tvCountDownTimer);
-        tv.setText(pomodoro_time+" : 00");
+        tv.setText(pomodoro_time + " : 00");
 
         int alarm_sound = R.raw.sound_1;
         switch (alarm_name) {
@@ -120,27 +123,28 @@ public class PomodoroFragment extends Fragment {
 
         helper = new DatabaseHelper(getActivity());
         String query = "SELECT * FROM activities WHERE concluded=2";
-        activities = utils.listActivities(query);
+        List<String> activities = utils.listActivities(query);
         utils.close();
 
         tvActivity = view.findViewById(R.id.tvActivity);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, activities);
         tvActivity.setAdapter(adapter);
 
+        Button new_activity = view.findViewById(R.id.new_activity);
+        new_activity.setOnClickListener(view1 -> newActivity());
+
         start = view.findViewById(R.id.start);
         int finalAlarm_sound = alarm_sound;
         start.setOnClickListener(view1 -> {
-            if(tvActivity.getSelectedItem().equals("Selecione"))
+            if (tvActivity.getSelectedItem().equals("Selecione"))
                 Toast.makeText(getActivity(), "Selecione a sua atividade!", Toast.LENGTH_SHORT).show();
             else {
                 startChronometer(tv, finalAlarm_sound);
                 start.setEnabled(false);
+                new_activity.setEnabled(false);
                 tvActivity.setEnabled(false);
             }
         });
-
-        new_activity = view.findViewById(R.id.new_activity);
-        new_activity.setOnClickListener(view1 -> newActivity());
 
         return view;
     }
@@ -152,14 +156,17 @@ public class PomodoroFragment extends Fragment {
 
     public void startChronometer(TextView tv, int alarm_sound) {
         int time = 1;
-        if(start.getText().equals("Iniciar Pomodoro")) {
+        int clock_time = pomodoro_time;
+        if (start.getText().equals("Iniciar Pomodoro")) {
             pomodoro_amount++;
-        }
-        else if(start.getText().equals("Iniciar pausa curta"))
+            clock_time = pomodoro_time;
+        } else if (start.getText().equals("Iniciar pausa curta")) {
             time = 2;
-        else if(start.getText().equals("Iniciar pausa longa")) {
+            clock_time = short_break_time;
+        } else if (start.getText().equals("Iniciar pausa longa")) {
             time = 3;
             pomodoro_amount = 0;
+            clock_time = long_break_time;
         }
 
         releasePlayer();
@@ -170,7 +177,7 @@ public class PomodoroFragment extends Fragment {
             mp = null;
         });
 
-        MyCountDownTimer timer = new MyCountDownTimer(getActivity(), tv, (long) pomodoro_time*60*1000, 1000, start, time, mp, pomodoro_amount, tvActivity);
+        MyCountDownTimer timer = new MyCountDownTimer(getActivity(), tv, (long) clock_time * 60 * 1000, 1000, start, time, mp, pomodoro_amount, tvActivity);
         timer.start();
     }
 

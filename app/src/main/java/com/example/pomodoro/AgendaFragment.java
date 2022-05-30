@@ -3,8 +3,10 @@ package com.example.pomodoro;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +15,14 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+
 import com.example.pomodoro.utils.EventDecorator;
 import com.example.pomodoro.utils.Utils;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -106,7 +110,7 @@ public class AgendaFragment extends Fragment implements OnDateSelectedListener, 
         utils.close();
 
         calendarView.addDecorators(new EventDecorator(
-               getResources().getColor(R.color.red), calendarDays));
+                getResources().getColor(R.color.red), calendarDays));
 
         return view;
     }
@@ -114,12 +118,12 @@ public class AgendaFragment extends Fragment implements OnDateSelectedListener, 
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
         String day = String.valueOf(date.getDay());
-        if(date.getDay() < 10)
-            day = "0"+date.getDay();
+        if (date.getDay() < 10)
+            day = "0" + date.getDay();
         String month = String.valueOf(date.getMonth());
-        if(date.getMonth() < 10)
-            month = "0"+date.getMonth();
-        String finalDate = day+"/"+month+"/"+date.getYear();
+        if (date.getMonth() < 10)
+            month = "0" + date.getMonth();
+        String finalDate = day + "/" + month + "/" + date.getYear();
 
         Utils utils = new Utils(getActivity());
         utils.findAgendas(0, finalDate);
@@ -129,7 +133,7 @@ public class AgendaFragment extends Fragment implements OnDateSelectedListener, 
         SimpleAdapter adapter = new SimpleAdapter(getActivity(), agendas, R.layout.agenda_list, from, to);
         agendas_list.setAdapter(adapter);
 
-        if(agendas.size() > 0) {
+        if (agendas.size() > 0) {
             agendas_list.setOnItemClickListener(this);
             ll_add.setVisibility(View.VISIBLE);
             add_agenda.setOnClickListener(view1 -> newAgenda(finalDate));

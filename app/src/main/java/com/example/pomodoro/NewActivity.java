@@ -1,10 +1,12 @@
 package com.example.pomodoro;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
@@ -14,7 +16,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.pomodoro.utils.DatabaseHelper;
+
 import java.util.Objects;
 
 public class NewActivity extends AppCompatActivity {
@@ -35,14 +39,14 @@ public class NewActivity extends AppCompatActivity {
         id = getIntent().getIntExtra("id", 0);
         String name = getIntent().getStringExtra("name");
         String description = getIntent().getStringExtra("description");
-        int concluded = getIntent().getIntExtra("concluded",2);
+        int concluded = getIntent().getIntExtra("concluded", 2);
 
         LinearLayout ll_delete = findViewById(R.id.ll_deleteActivity);
         LinearLayout ll_concludeActivity = findViewById(R.id.ll_concludeActivity);
 
         TextView tv_activity = findViewById(R.id.tv_newActivity);
-        if(id != 0) {
-            tv_activity.setText("Editar Atividade "+id);
+        if (id != 0) {
+            tv_activity.setText("Lista de atividades > Editar atividade");
         } else {
             ll_delete.setVisibility(View.INVISIBLE);
             ll_concludeActivity.setVisibility(View.INVISIBLE);
@@ -55,7 +59,7 @@ public class NewActivity extends AppCompatActivity {
         txt_description = findViewById(R.id.activity_desc);
         txt_description.setText(description);
         checkBox = findViewById(R.id.checkbox);
-        if(concluded==1)
+        if (concluded == 1)
             checkBox.setChecked(true);
 
         Button save = findViewById(R.id.save_activity);
@@ -71,12 +75,11 @@ public class NewActivity extends AppCompatActivity {
 
         if (name.equals("")) {
             Toast.makeText(this, "Informe o nome", Toast.LENGTH_SHORT).show();
-        }
-        else {
+        } else {
             SQLiteDatabase db = helper.getWritableDatabase();
 
             int concluded = 2;
-            if(checkBox.isChecked())
+            if (checkBox.isChecked())
                 concluded = 1;
 
             ContentValues values = new ContentValues();
@@ -106,7 +109,8 @@ public class NewActivity extends AppCompatActivity {
         box.setIcon(android.R.drawable.ic_menu_delete);
         box.setMessage("Tem certeza que deseja excluir esta atividade?");
         box.setPositiveButton("Sim", (dialogInterface, i) -> DeleteActivity());
-        box.setNegativeButton("Não", (dialogInterface, i) -> {});
+        box.setNegativeButton("Não", (dialogInterface, i) -> {
+        });
         box.show();
     }
 
@@ -124,8 +128,11 @@ public class NewActivity extends AppCompatActivity {
 
     protected void onBack() {
         helper.close();
+        SharedPreferences settings = getSharedPreferences("UserInfo", MODE_PRIVATE);
+        String user_name = settings.getString("user_name", "");
         Intent it = new Intent(this, MainActivity.class);
         it.putExtra("screen", "ActivitiesListFragment");
+        it.putExtra("user_name", user_name);
         startActivity(it);
     }
 

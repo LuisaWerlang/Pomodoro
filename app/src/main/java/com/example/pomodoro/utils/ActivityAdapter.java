@@ -8,8 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
+
 import com.example.pomodoro.R;
+
 import java.util.List;
 
 public class ActivityAdapter extends ArrayAdapter<Activities> {
@@ -48,7 +51,7 @@ public class ActivityAdapter extends ArrayAdapter<Activities> {
         TextView tvDescription = convertView.findViewById(R.id.description);
         repositorio.txt_description = tvDescription;
 
-        if(items.get(position).getConcluded()==1) {
+        if (items.get(position).getConcluded() == 1) {
             tvName.setPaintFlags(tvName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             tvDescription.setPaintFlags(tvDescription.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }

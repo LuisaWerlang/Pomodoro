@@ -5,7 +5,11 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
+
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +18,7 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.pomodoro.utils.DatabaseHelper;
 import com.example.pomodoro.utils.Utils;
 
@@ -86,7 +91,7 @@ public class SettingsFragment extends Fragment {
 
         Bundle mBundle;
         mBundle = getArguments();
-        if(mBundle != null) {
+        if (mBundle != null) {
             alarm_name = mBundle.getString("settings_sound");
             clock_name = mBundle.getString("settings_clock");
             pomodoro_time = mBundle.getString("settings_pomodoro_time");
@@ -96,15 +101,15 @@ public class SettingsFragment extends Fragment {
 
         Utils utils = new Utils(getActivity());
         utils.findSettings();
-        if(pomodoro_time.isEmpty())
+        if (pomodoro_time.isEmpty())
             pomodoro_time = String.valueOf(utils.getPomodoroTime());
-        if(short_break_time.isEmpty())
+        if (short_break_time.isEmpty())
             short_break_time = String.valueOf(utils.getShortBreakTime());
-        if(long_break_time.isEmpty())
+        if (long_break_time.isEmpty())
             long_break_time = String.valueOf(utils.getLongBreakTime());
-        if(alarm_name.isEmpty())
+        if (alarm_name.isEmpty())
             alarm_name = utils.getAlarmName();
-        if(clock_name.isEmpty())
+        if (clock_name.isEmpty())
             clock_name = utils.getClockName();
         utils.close();
 
@@ -119,7 +124,9 @@ public class SettingsFragment extends Fragment {
 
         String finalClock_name = clock_name;
         tv_alarm_sound = v.findViewById(R.id.alarm_sound);
-        tv_alarm_sound.setText(alarm_name);
+        SpannableString content = new SpannableString(alarm_name);
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        tv_alarm_sound.setText(content);
         tv_alarm_sound.setOnClickListener(view1 -> {
             Intent intent = new Intent(getActivity(), AlarmSound.class);
             intent.putExtra("sound_name", tv_alarm_sound.getText().toString());
@@ -132,7 +139,7 @@ public class SettingsFragment extends Fragment {
 
         tvclock_name = v.findViewById(R.id.clock_name);
         tvclock_name.setOnClickListener(view1 -> {
-            if(!finalClock_name.isEmpty()) {
+            if (!finalClock_name.isEmpty()) {
                 Intent intent = new Intent(getActivity(), ClockSound.class);
                 intent.putExtra("sound_name", tv_alarm_sound.getText().toString());
                 intent.putExtra("clock_name", tvclock_name.getText().toString());
@@ -145,7 +152,7 @@ public class SettingsFragment extends Fragment {
 
         @SuppressLint("UseSwitchCompatOrMaterialCode") Switch clock_sound = v.findViewById(R.id.clock_sound);
         clock_sound.setOnClickListener(view1 -> {
-            if(clock_sound.isChecked()) {
+            if (clock_sound.isChecked()) {
                 Intent intent = new Intent(getActivity(), ClockSound.class);
                 intent.putExtra("sound_name", tv_alarm_sound.getText().toString());
                 intent.putExtra("clock_name", tvclock_name.getText().toString());
@@ -153,14 +160,15 @@ public class SettingsFragment extends Fragment {
                 intent.putExtra("short_break_time", shortBreakTime.getText().toString());
                 intent.putExtra("long_break_time", longBreakTime.getText().toString());
                 startActivity(intent);
-            }
-            else {
+            } else {
                 tvclock_name.setText("");
             }
         });
 
-        if(!clock_name.isEmpty()) {
-            tvclock_name.setText(clock_name);
+        if (!clock_name.isEmpty()) {
+            SpannableString content_clock = new SpannableString(clock_name);
+            content_clock.setSpan(new UnderlineSpan(), 0, content_clock.length(), 0);
+            tvclock_name.setText(content_clock);
             clock_sound.setChecked(true);
         }
 
@@ -171,16 +179,15 @@ public class SettingsFragment extends Fragment {
     }
 
     protected void onSaveSettings() {
-        String pomodoro  = pomodoroTime.getText().toString();
+        String pomodoro = pomodoroTime.getText().toString();
         String short_break = shortBreakTime.getText().toString();
         String long_break = longBreakTime.getText().toString();
         String alarm_sound = tv_alarm_sound.getText().toString();
         String clock_sound = tvclock_name.getText().toString();
 
-        if (pomodoro.equals("") || short_break.equals("") || long_break.equals("") ) {
+        if (pomodoro.equals("") || short_break.equals("") || long_break.equals("")) {
             Toast.makeText(getActivity(), "Informe os tempos para salvar", Toast.LENGTH_SHORT).show();
-        }
-        else {
+        } else {
             SQLiteDatabase db = helper.getWritableDatabase();
 
             ContentValues values = new ContentValues();

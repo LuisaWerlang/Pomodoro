@@ -151,12 +151,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.nav_host_fragment_content_main, fragment)
                     .commit();
-        } else if (id == R.id.nav_grupos) {
+        } /*else if (id == R.id.nav_grupos) {
             GroupFragment fragment = new GroupFragment();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.nav_host_fragment_content_main, fragment)
                     .commit();
-        } else if (id == R.id.nav_agenda) {
+        } */else if (id == R.id.nav_agenda) {
             AgendaFragment fragment = new AgendaFragment();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.nav_host_fragment_content_main, fragment)

@@ -2,6 +2,7 @@ package com.example.pomodoro;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -97,12 +98,15 @@ public class AlarmSound extends AppCompatActivity {
             for (int x = 1; x <= 8; x++) {
                 if (x == selection) { alarm_name = "Sound " + x; }
             }
+            SharedPreferences settings = getSharedPreferences("UserInfo", MODE_PRIVATE);
+            String user_name = settings.getString("user_name", "");
             Intent it = new Intent(this, MainActivity.class);
             it.putExtra("settings_sound", alarm_name);
             it.putExtra("settings_clock", clock_name);
             it.putExtra("settings_pomodoro_time", pomodoro_time);
             it.putExtra("settings_short_break_time", short_break_time);
             it.putExtra("settings_long_break_time", long_break_time);
+            it.putExtra("user_name", user_name);
             startActivity(it);
             finishAffinity();
             return true;

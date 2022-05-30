@@ -1,35 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="16dp"
     android:orientation="vertical"
     android:paddingLeft="8dp"
     android:paddingRight="8dp"
-    android:id="@+id/layout"
-    android:layout_marginTop="16dp"
     tools:context=".LoginActivity">
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_timelapse_24"
         android:contentDescription=""
+        android:src="@drawable/ic_baseline_alarm_24"
         tools:ignore="ContentDescription" />
 
     <TextView
+        style="@style/textViewTitulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:text="@string/pomodoro"
-        android:textStyle="bold"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:textColor="@color/tomato"
+        android:text="@string/pomodoro" />
 
     <TextView
+        style="@style/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:textColor="@color/black"
         android:text="@string/usuario" />
 
     <EditText
@@ -38,24 +37,23 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:autofillHints=""
-        tools:ignore="LabelFor"
-        android:hint="Digite seu usuário"
-        android:inputType="text" />
+        android:hint="@string/digite_seu_usuario"
+        android:inputType="text"
+        tools:ignore="LabelFor" />
 
     <TextView
+        style="@style/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:textColor="@color/black"
         android:text="@string/senha" />
 
     <EditText
         android:id="@+id/txt_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="numberPassword"
         android:autofillHints=""
-        android:hint="Digite sua senha"
+        android:hint="@string/digite_sua_senha"
+        android:inputType="numberPassword"
         tools:ignore="LabelFor" />
 
     <Button
@@ -63,15 +61,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="@string/entrar"/>
+        android:text="@string/entrar" />
 
     <Button
         android:id="@+id/button_new"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#fff"
-        android:textColor="#0000ff"
+        android:text="@string/nao_possui_conta_cadastrar"
         android:textAllCaps="false"
-        android:text="@string/cadastrar"/>
+        android:textColor="#0000ff" />
 
 </LinearLayout>

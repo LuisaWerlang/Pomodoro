@@ -1,6 +1,7 @@
 package com.example.pomodoro;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
@@ -8,6 +9,7 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
@@ -20,8 +22,10 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.pomodoro.utils.DatabaseHelper;
 import com.example.pomodoro.utils.Utils;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -57,8 +61,8 @@ public class NewAgenda extends AppCompatActivity {
         LinearLayout ll_delete = findViewById(R.id.ll_delete);
 
         TextView tv_agenda = findViewById(R.id.tv_agenda);
-        if(id != 0) {
-            tv_agenda.setText("Editar Agenda "+id);
+        if (id != 0) {
+            tv_agenda.setText("Agendar Pomodoro > Editar agenda");
         } else {
             ll_delete.setVisibility(View.INVISIBLE);
         }
@@ -127,7 +131,7 @@ public class NewAgenda extends AppCompatActivity {
         String hour_notify = et_notify.getText().toString();
         activity_name = (String) tvActivity.getSelectedItem();
 
-        if ((date.equals(""))||(hour.equals(""))||(hour_notify.equals(""))||(tvActivity.getSelectedItem().equals("Selecione")))
+        if ((date.equals("")) || (hour.equals("")) || (hour_notify.equals("")) || (tvActivity.getSelectedItem().equals("Selecione")))
             Toast.makeText(this, "Informe todos os campos para salvar", Toast.LENGTH_SHORT).show();
         else {
             SQLiteDatabase db = helper.getWritableDatabase();
@@ -140,7 +144,7 @@ public class NewAgenda extends AppCompatActivity {
                 long finalHour = Objects.requireNonNull(hourFormat.parse(hour)).getTime() / 1000;
                 long finalHourNotify = Objects.requireNonNull(hourFormat.parse(hour_notify)).getTime() / 1000;
 
-                if(finalHourNotify > finalHour) {
+                if (finalHourNotify > finalHour) {
                     Toast.makeText(this, "A hora da notificação deve ser anterior a hora do evento!", Toast.LENGTH_SHORT).show();
                 } else {
                     ContentValues values = new ContentValues();
@@ -188,12 +192,12 @@ public class NewAgenda extends AppCompatActivity {
         sdf = new SimpleDateFormat("mm");
         int agendaMinute = Integer.parseInt(sdf.format(hour));
         int agendaMinuteNotify = Integer.parseInt(sdf.format(hour_notify));
-        int minutesNotify = (agendaHourNotify*60)+agendaMinuteNotify;
-        int minutosHour = (agendaHour*60)+agendaMinute;
+        int minutesNotify = (agendaHourNotify * 60) + agendaMinuteNotify;
+        int minutosHour = (agendaHour * 60) + agendaMinute;
 
         long calID = 3;
         Calendar beginTime = Calendar.getInstance();
-        beginTime.set(agendaYear, (agendaMonth-1), agendaDay, agendaHour, agendaMinute);
+        beginTime.set(agendaYear, (agendaMonth - 1), agendaDay, agendaHour, agendaMinute);
         long startMillis = beginTime.getTimeInMillis();
 
         ContentResolver cr = getContentResolver();
@@ -206,7 +210,7 @@ public class NewAgenda extends AppCompatActivity {
         values.put(CalendarContract.Events.EVENT_TIMEZONE, Calendar.getInstance()
                 .getTimeZone().getID());
         Uri uri;
-        if(eventId != 0) {
+        if (eventId != 0) {
             uri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, eventId);
             getContentResolver().update(uri, values, null, null);
         } else {
@@ -215,7 +219,7 @@ public class NewAgenda extends AppCompatActivity {
         }
 
         ContentValues newvalues = new ContentValues();
-        newvalues.put(CalendarContract.Reminders.MINUTES, (minutosHour-minutesNotify));
+        newvalues.put(CalendarContract.Reminders.MINUTES, (minutosHour - minutesNotify));
         newvalues.put(CalendarContract.Reminders.EVENT_ID, eventId);
         newvalues.put(CalendarContract.Reminders.METHOD, CalendarContract.Reminders.METHOD_ALERT);
         cr.insert(CalendarContract.Reminders.CONTENT_URI, newvalues);
@@ -229,7 +233,8 @@ public class NewAgenda extends AppCompatActivity {
         box.setIcon(android.R.drawable.ic_menu_delete);
         box.setMessage("Tem certeza que deseja excluir esta agenda?");
         box.setPositiveButton("Sim", (dialogInterface, i) -> DeleteAgenda());
-        box.setNegativeButton("Não", (dialogInterface, i) -> {});
+        box.setNegativeButton("Não", (dialogInterface, i) -> {
+        });
         box.show();
     }
 
@@ -250,8 +255,11 @@ public class NewAgenda extends AppCompatActivity {
 
     protected void onBack() {
         helper.close();
+        SharedPreferences settings = getSharedPreferences("UserInfo", MODE_PRIVATE);
+        String user_name = settings.getString("user_name", "");
         Intent it = new Intent(this, MainActivity.class);
         it.putExtra("screen", "AgendaFragment");
+        it.putExtra("user_name", user_name);
         startActivity(it);
     }
 

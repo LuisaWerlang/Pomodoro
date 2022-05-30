@@ -1,54 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="16dp"
     android:orientation="vertical"
     android:paddingLeft="8dp"
     android:paddingRight="8dp"
-    android:id="@+id/layout"
-    android:layout_marginTop="16dp"
     tools:context=".NewActivity">
 
     <TextView
         android:id="@+id/tv_newActivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/nova_atividade"
-        android:textSize="20sp"
+        android:text="@string/lista_de_atividades_nova_atividade"
         android:textColor="@color/black"
+        android:textSize="16sp"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tv_name"
+        style="@style/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:textColor="@color/black"
         android:text="@string/nome" />
 
     <EditText
         android:id="@+id/activity_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textCapSentences"
         android:autofillHints=""
+        android:inputType="textCapSentences"
         tools:ignore="LabelFor" />
 
     <TextView
         android:id="@+id/tv_description"
+        style="@style/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:textColor="@color/black"
         android:text="@string/descri_o" />
 
     <EditText
         android:id="@+id/activity_desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textCapSentences"
         android:autofillHints=""
+        android:inputType="textCapSentences"
         tools:ignore="LabelFor" />
 
     <LinearLayout
@@ -60,9 +58,10 @@
 
         <CheckBox
             android:id="@+id/checkbox"
+            style="@style/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Concluir atividade"/>
+            android:text="@string/concluir_atividade" />
 
     </LinearLayout>
 
@@ -71,7 +70,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:text="@string/salvar" />
 
     <LinearLayout

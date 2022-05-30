@@ -3,6 +3,7 @@ package com.example.pomodoro.utils;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class Activities {
         SQLiteDatabase db = helper.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         cursor.moveToFirst();
-        for(int i=0; i<cursor.getCount(); i++) {
+        for (int i = 0; i < cursor.getCount(); i++) {
             Activities activity = new Activities(context);
             activity.setId(cursor.getInt(0));
             activity.setName(cursor.getString(1));

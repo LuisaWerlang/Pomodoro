@@ -8,10 +8,11 @@
 
     <TextView
         android:id="@+id/tv_question"
-        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Pergunta" />
+        android:layout_marginTop="10dp"
+        android:textColor="@color/black"
+        android:text="@string/pergunta" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,7 +24,7 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="CT"
+            android:text="@string/ct"
             android:textColor="@color/black"
             android:textStyle="bold" />
 
@@ -31,7 +32,7 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="C"
+            android:text="@string/c"
             android:textColor="@color/black"
             android:textStyle="bold" />
 
@@ -39,7 +40,7 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="ND"
+            android:text="@string/nd"
             android:textColor="@color/black"
             android:textStyle="bold" />
 
@@ -47,7 +48,7 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="D"
+            android:text="@string/d"
             android:textColor="@color/black"
             android:textStyle="bold" />
 
@@ -55,7 +56,7 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="DT"
+            android:text="@string/dt"
             android:textColor="@color/black"
             android:textStyle="bold" />
 
@@ -113,10 +114,10 @@
         android:id="@+id/et_observation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:hint="Deixe seu comentário"
-        android:inputType="textAutoComplete"
-        android:autofillHints="" />
+        android:layout_marginTop="5dp"
+        android:autofillHints=""
+        android:hint="@string/deixe_seu_comentario"
+        android:inputType="textAutoComplete" />
 
 </LinearLayout>
 

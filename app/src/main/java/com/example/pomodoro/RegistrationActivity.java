@@ -1,6 +1,7 @@
 package com.example.pomodoro;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,7 +11,9 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import com.example.pomodoro.utils.DatabaseHelper;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -18,10 +21,9 @@ import java.util.Objects;
 
 public class RegistrationActivity extends AppCompatActivity {
 
-    private EditText txt_user, txt_password;
-    String user_name;
+    private EditText txt_user, txt_password, txt_user_name;
     private DatabaseHelper helper;
-    private String user,password;
+    private String user, password, user_name;
 
     public static final String DATABASE_NAME = "pomodoro";
     public static final String url = "jdbc:mysql://pomodoro.cdoluywguze8.us-east-1.rds.amazonaws.com:3306/" +
@@ -41,6 +43,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
         txt_user = findViewById(R.id.txt_user);
         txt_password = findViewById(R.id.txt_password);
+        txt_user_name = findViewById(R.id.txt_user_name);
         Button register = findViewById(R.id.button_new);
         register.setOnClickListener(view -> onSave());
         Button login = findViewById(R.id.button_login);
@@ -50,13 +53,13 @@ public class RegistrationActivity extends AppCompatActivity {
     public void onSave() {
         user = txt_user.getText().toString();
         password = txt_password.getText().toString();
-        user_name = user;
+        user_name = txt_user_name.getText().toString();
 
-        if (password.equals("") && user.equals("")) {
+        if (password.equals("") && user.equals("") && user_name.equals("")) {
             Toast.makeText(getApplicationContext(), "Informe todos os dados para o cadastro!", Toast.LENGTH_SHORT).show();
         } else {
             SQLiteDatabase db = helper.getReadableDatabase();
-            String query = "SELECT * FROM user WHERE user = '"+user+"' AND password = '"+password+"'";
+            String query = "SELECT * FROM user WHERE user = '" + user + "' AND password = '" + password + "'";
             Cursor cursor = db.rawQuery(query, null);
             if (cursor.getCount() > 0) {
                 Toast.makeText(getApplicationContext(), "Já existe usuário cadastrado! Faça o Login para continuar.", Toast.LENGTH_SHORT).show();
@@ -66,6 +69,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 ContentValues values = new ContentValues();
                 values.put("user", user);
                 values.put("password", password);
+                values.put("user_name", user_name);
 
                 long result = db.insert("user", null, values);
                 if (result != -1) {
@@ -85,7 +89,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection connection = DriverManager.getConnection(url, db_username, db_password);
                 Statement statement = connection.createStatement();
-                statement.execute("INSERT INTO " + TABLE_NAME + "(user, password) VALUES('" + user + "', '" + password + "')");
+                statement.execute("INSERT INTO " + TABLE_NAME + "(user, password, user_name) VALUES('" + user + "', '" + password + "', '" + user_name + "')");
                 connection.close();
             } catch (Exception e) {
                 e.printStackTrace();

@@ -11,54 +11,25 @@
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
+        style="@style/textViewTitulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/pomodoro"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+        android:text="@string/pomodoro" />
 
     <TextView
         android:id="@+id/tv_activity"
+        style="@style/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:textColor="@color/black"
         android:text="@string/atividade" />
 
-    <LinearLayout
+    <Spinner
+        android:id="@+id/tvActivity"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Spinner
-            android:id="@+id/tvActivity"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="10dp"
-            android:layout_weight="5"
-            android:background="@drawable/spinner_shape"
-            android:textColor="@color/red" />
-
-        <ImageButton
-            android:id="@+id/new_activity"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:layout_marginTop="10dp"
-            android:src="@drawable/ic_baseline_add_24"
-            tools:ignore="ContentDescription,RtlHardcoded" />
-    </LinearLayout>
-
-    <!--    <TextView-->
-    <!--        android:id="@+id/tvActivity"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:textSize="20sp"-->
-    <!--        android:textColor="#f00"-->
-    <!--        android:gravity="center"-->
-    <!--        android:layout_marginTop="40dp"-->
-    <!--        android:text="@string/sua_atividade" />-->
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/spinner_shape"
+        android:textColor="@color/red" />
 
     <ImageView
         android:layout_width="match_parent"
@@ -68,13 +39,6 @@
         android:src="@drawable/ic_baseline_timelapse_24"
         tools:ignore="ContentDescription" />
 
-    <!--    <View-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="1dp"-->
-    <!--        android:layout_marginTop="20dp"-->
-    <!--        android:layout_marginBottom="5dp"-->
-    <!--        android:background="#ddd" />-->
-
     <TextView
         android:id="@+id/tvCountDownTimer"
         android:layout_width="match_parent"
@@ -82,7 +46,7 @@
         android:layout_marginTop="25dp"
         android:gravity="center"
         android:text="00:00"
-        android:textColor="#444"
+        android:textColor="@color/tomato"
         android:textSize="50sp"
         tools:ignore="HardcodedText" />
 
@@ -99,6 +63,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/iniciar_pomodoro"
+        tools:ignore="UsingOnClickInXml" />
+
+    <Button
+        android:id="@+id/new_activity"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/nova_atividade"
         tools:ignore="UsingOnClickInXml" />
 
 </LinearLayout>

@@ -3,48 +3,58 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="16dp"
     android:orientation="vertical"
     android:paddingLeft="8dp"
     android:paddingRight="8dp"
-    android:layout_marginTop="16dp"
     tools:context=".RegistrationActivity">
 
     <TextView
+        style="@style/textViewTitulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/cadastro_de_novo_usuario"
-        android:textSize="20sp"
-        android:textColor="@color/black"
-        android:textStyle="bold" />
+        android:text="@string/cadastro_de_novo_usuario" />
 
     <TextView
+        style="@style/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:textColor="@color/black"
+        android:text="@string/nome" />
+
+    <EditText
+        android:id="@+id/txt_user_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:autofillHints=""
+        android:inputType="text"
+        tools:ignore="LabelFor" />
+
+    <TextView
+        style="@style/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:text="@string/usuario" />
 
     <EditText
         android:id="@+id/txt_user"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="text"
         android:autofillHints=""
+        android:inputType="text"
         tools:ignore="LabelFor" />
 
     <TextView
+        style="@style/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:textColor="@color/black"
         android:text="@string/senha" />
 
     <EditText
         android:id="@+id/txt_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="numberPassword"
         android:autofillHints=""
+        android:inputType="numberPassword"
         tools:ignore="LabelFor" />
 
     <Button
@@ -52,15 +62,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="@string/cadastrar"/>
+        android:text="@string/cadastrar" />
 
     <Button
         android:id="@+id/button_login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#fff"
-        android:textColor="#0000ff"
+        android:text="@string/ja_possui_cadastro_entrar"
         android:textAllCaps="false"
-        android:text="Já possui cadastro? Entrar"/>
+        android:textColor="#0000ff" />
 
 </LinearLayout>

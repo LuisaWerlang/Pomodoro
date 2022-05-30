@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.ListView;
 import com.example.pomodoro.utils.Activities;
 import com.example.pomodoro.utils.ActivityAdapter;
@@ -77,7 +77,7 @@ public class ActivitiesListFragment extends Fragment implements AdapterView.OnIt
         activities_list.setAdapter(adapter);
         activities_list.setOnItemClickListener(this);
 
-        ImageView new_activity = view.findViewById(R.id.new_activity);
+        Button new_activity = view.findViewById(R.id.new_activity);
         new_activity.setOnClickListener(view1 -> {
             Intent intent = new Intent(getActivity(), NewActivity.class);
             startActivity(intent);

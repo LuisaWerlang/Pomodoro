@@ -6,7 +6,9 @@ import android.content.SharedPreferences;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
+
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +19,12 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+
 import com.example.pomodoro.utils.DatabaseHelper;
 import com.example.pomodoro.utils.Questions;
 import com.example.pomodoro.utils.QuizzAdapter;
 import com.tooltip.Tooltip;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -40,8 +44,10 @@ public class QuizzFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private ArrayAdapter<Questions> adapter;
     private DatabaseHelper helper;
-    private int answer_pomodoro, user_id, ct, c, nd, d, dt, value;
-    private String user_name, question_name, observation;
+    private RadioGroup radioGroup;
+    private String user_name;
+    private int user_id, answer_pomodoro = 0;
+    private ListView questions_list;
 
     public static final String DATABASE_NAME = "pomodoro";
     public static final String url = "jdbc:mysql://pomodoro.cdoluywguze8.us-east-1.rds.amazonaws.com:3306/" +
@@ -92,16 +98,9 @@ public class QuizzFragment extends Fragment {
 
         helper = new DatabaseHelper(getActivity());
 
-        RadioGroup radioGroup = view.findViewById(R.id.radioGroupPomodoro);
-        int answer = radioGroup.getCheckedRadioButtonId();
+        radioGroup = view.findViewById(R.id.radioGroupPomodoro);
 
-        if(answer == R.id.radioButton_sim) {
-            answer_pomodoro = 1;
-        } else if(answer == R.id.radioButton_nao) {
-            answer_pomodoro = 2;
-        }
-
-        ListView questions_list = view.findViewById(R.id.lv_questions);
+        questions_list = view.findViewById(R.id.lv_questions);
 
         Questions items = new Questions(getActivity());
         List<Questions> questions = items.listQuestions(getActivity());
@@ -113,11 +112,10 @@ public class QuizzFragment extends Fragment {
 
         ImageButton help = view.findViewById(R.id.help);
         help.setOnClickListener(view1 -> {
-            if(tooltip_ok[0] == 1) {
+            if (tooltip_ok[0] == 1) {
                 tooltip[0].dismiss();
                 tooltip_ok[0] = 2;
-            }
-            else {
+            } else {
                 tooltip_ok[0] = 1;
                 tooltip[0] = new Tooltip.Builder(help)
                         .setText("Legenda:\n " +
@@ -142,70 +140,65 @@ public class QuizzFragment extends Fragment {
         boolean save_ok = true;
         long result;
         ContentValues values;
+        int answer = radioGroup.getCheckedRadioButtonId();
+        if (answer == R.id.radioButton_sim) {
+            answer_pomodoro = 1;
+        } else if (answer == R.id.radioButton_nao) {
+            answer_pomodoro = 2;
+        }
+        if (answer_pomodoro != 0) {
+            SharedPreferences settings = Objects.requireNonNull(getActivity()).getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+            user_name = settings.getString("user_name", "");
+            user_id = settings.getInt("user_id", 0);
 
-        SharedPreferences settings = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
-        user_name = settings.getString("user_name", "");
-        user_id = settings.getInt("user_id",0);
+            for (int i = 0; i < adapter.getCount(); i++) {
+                int answer_option = adapter.getItem(i).answer_option;
+                if (answer_option != 0) {
+                    int ct = 2, c = 2, nd = 2, d = 2, dt = 2;
 
-        for(int i=0;i<adapter.getCount();i++) {
-            int answer_option = adapter.getItem(i).answer_option;
-            if (answer_option != 0) {
-                question_name = adapter.getItem(i).question_name;
-                observation = adapter.getItem(i).answer_observation;
-                ct = 2; c = 2; nd = 2; d = 2; dt = 2;
+                    values = new ContentValues();
+                    values.put("user", user_name);
+                    values.put("user_id", user_id);
+                    values.put("question", adapter.getItem(i).question_name);
+                    values.put("CT", ct);
+                    values.put("C", c);
+                    values.put("ND", nd);
+                    values.put("D", d);
+                    values.put("DT", dt);
+                    values.put("observation", adapter.getItem(i).answer_observation);
+                    values.put("pomodoro", answer_pomodoro);
 
-                values = new ContentValues();
-                values.put("user", user_name);
-                values.put("user_id", user_id);
-                values.put("question", question_name);
-                values.put("CT", ct);
-                values.put("C", c);
-                values.put("ND", nd);
-                values.put("D", d);
-                values.put("DT", dt);
-                values.put("observation", observation);
-                values.put("pomodoro", answer_pomodoro);
+                    if (answer_option == adapter.getItem(i).ct) {
+                        values.put("CT", 1);
+                    } else if (answer_option == adapter.getItem(i).c) {
+                        values.put("C", 1);
+                    } else if (answer_option == adapter.getItem(i).nd) {
+                        values.put("ND", 1);
+                    } else if (answer_option == adapter.getItem(i).d) {
+                        values.put("D", 1);
+                    } else if (answer_option == adapter.getItem(i).dt) {
+                        values.put("DT", 1);
+                    }
 
-                if(answer_option == adapter.getItem(i).ct) {
-                    values.put("CT", 1);
-                    ct = 1;
-                    value = 5;
-                } else if(answer_option == adapter.getItem(i).c) {
-                    values.put("C", 1);
-                    c = 1;
-                    value = 4;
-                } else if(answer_option == adapter.getItem(i).nd) {
-                    values.put("ND", 1);
-                    nd = 1;
-                    value = 3;
-                } else if(answer_option == adapter.getItem(i).d) {
-                    values.put("D", 1);
-                    d = 1;
-                    value = 2;
-                } else if(answer_option == adapter.getItem(i).dt) {
-                    values.put("DT", 1);
-                    dt = 2;
-                    value = 1;
-                }
+                    result = db.insert("answer", null, values);
 
-                result = db.insert("answer", null, values);
-
-                if (result == -1) {
-                    save_ok = false;
-                    Toast.makeText(getActivity(), "Erro ao salvar!", Toast.LENGTH_SHORT).show();
+                    if (result == -1) {
+                        save_ok = false;
+                        Toast.makeText(getActivity(), "Erro ao salvar!", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
+                } else {
+                    Toast.makeText(getActivity(), "Responda a todas as perguntas!", Toast.LENGTH_SHORT).show();
                     break;
                 }
-                else {
-                    //envia dados para o servidor
-                    save();
-                }
-            } else {
-                Toast.makeText(getActivity(), "Responda a todas as perguntas!", Toast.LENGTH_SHORT).show();
-                break;
             }
+            if (save_ok) {
+                Toast.makeText(getActivity(), "Aguarde! Enviando os dados para o servidor...", Toast.LENGTH_LONG).show();
+                save(); //envia dados para o servidor
+            }
+        } else {
+            Toast.makeText(getActivity(), "Responda a todas as perguntas!", Toast.LENGTH_SHORT).show();
         }
-        if(save_ok)
-            Toast.makeText(getActivity(), "Registro salvo com sucesso!", Toast.LENGTH_SHORT).show();
     }
 
     public void save() throws SQLException {
@@ -215,16 +208,54 @@ public class QuizzFragment extends Fragment {
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection connection = DriverManager.getConnection(url, db_username, db_password);
                 Statement statement = connection.createStatement();
-                statement.execute("INSERT INTO " + TABLE_NAME +
-                        "(user_id, user, question, CT, C, ND, D, DT, pomodoro, observation, value) " +
-                        "VALUES('" + user_id + "', '" + user_name + "', '" + question_name + "', '" +
-                        ct + "', '" + c + "', '" + nd + "', '" + d + "', '" + dt + "', '" + answer_pomodoro +
-                        "', '" + observation + "', '" + value + "')");
+                for (int i = 0; i < adapter.getCount(); i++) {
+                    int answer_option = adapter.getItem(i).answer_option;
+                    int ct = 2, c = 2, nd = 2, d = 2, dt = 2, value = 0;
+
+                    if (answer_option == adapter.getItem(i).ct) {
+                        ct = 1;
+                        value = 5;
+                    } else if (answer_option == adapter.getItem(i).c) {
+                        c = 1;
+                        value = 4;
+                    } else if (answer_option == adapter.getItem(i).nd) {
+                        nd = 1;
+                        value = 3;
+                    } else if (answer_option == adapter.getItem(i).d) {
+                        d = 1;
+                        value = 2;
+                    } else if (answer_option == adapter.getItem(i).dt) {
+                        dt = 1;
+                        value = 1;
+                    }
+
+                    statement.execute("INSERT INTO " + TABLE_NAME +
+                            "(user_id, user, question, CT, C, ND, D, DT, pomodoro, observation, value) " +
+                            "VALUES('" + user_id + "', '" + user_name + "', '" + adapter.getItem(i).question_name + "', '" +
+                            ct + "', '" + c + "', '" + nd + "', '" + d + "', '" + dt + "', '" + answer_pomodoro +
+                            "', '" + adapter.getItem(i).answer_observation + "', '" + value + "')");
+                }
                 connection.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
+                // after the job is finished:
+                Toast.makeText(getActivity(), "Registro salvo com sucesso!", Toast.LENGTH_SHORT).show();
+                clearFields();
+            });
         }).start();
+    }
+
+    public void clearFields() {
+        radioGroup.clearCheck();
+        questions_list.clearChoices();
+        for (int i = 0; i < adapter.getCount(); i++) {
+            adapter.getItem(i).setAnswer_observation("");
+            adapter.getItem(i).setAnswer_option(0);
+        }
+        questions_list.setSelectionAfterHeaderView();
     }
 
     @Override

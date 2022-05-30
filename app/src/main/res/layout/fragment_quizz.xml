@@ -8,17 +8,14 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
         <TextView
+            style="@style/textViewTitulo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Questionário"
-            android:textColor="@color/black"
-            android:textSize="20sp"
             android:layout_weight="3"
-            android:textStyle="bold" />
+            android:text="@string/questionario" />
 
         <ImageButton
             android:id="@+id/help"
@@ -26,6 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="#fafafa"
+            android:contentDescription="@string/help"
             android:src="@drawable/ic_baseline_help_outline_24" />
 
     </LinearLayout>
@@ -33,15 +31,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
 
         <TextView
+            style="@style/textView_v2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/black"
-            android:text="Usando Pomodoro?"/>
+            android:text="@string/usando_pomodoro" />
 
         <RadioGroup
             android:id="@+id/radioGroupPomodoro"
@@ -52,26 +50,28 @@
 
             <RadioButton
                 android:id="@+id/radioButton_sim"
+                style="@style/textView_v2"
                 android:layout_width="75dp"
                 android:layout_height="wrap_content"
-                android:text="Sim"
-                android:checked="false" />
+                android:checked="false"
+                android:text="@string/sim" />
 
             <RadioButton
                 android:id="@+id/radioButton_nao"
+                style="@style/textView_v2"
                 android:layout_width="75dp"
                 android:layout_height="wrap_content"
-                android:text="Não"
-                android:checked="false" />
+                android:checked="false"
+                android:text="@string/nao" />
 
-            </RadioGroup>
+        </RadioGroup>
     </LinearLayout>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:text="Marque a resposta mais correta:"
+        android:text="@string/marque_a_resposta_mais_correta"
         android:textColor="@color/black"
         android:textSize="15sp"
         android:textStyle="bold" />
@@ -80,14 +80,13 @@
         android:id="@+id/lv_questions"
         android:layout_width="match_parent"
         android:layout_height="520dp"
-        android:layout_marginTop="15dp" />
+        android:layout_marginTop="5dp" />
 
     <Button
         android:id="@+id/save_questions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
         android:text="@string/salvar" />
 
 </LinearLayout>
