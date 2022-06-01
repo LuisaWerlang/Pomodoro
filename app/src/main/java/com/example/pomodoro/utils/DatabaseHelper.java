@@ -34,11 +34,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "short_break_time int, " +
                 "long_break_time int, " +
                 "alarm_sound TEXT, " +
-                "clock_sound TEXT);");
+                "clock_sound TEXT," +
+                "pomodoro_amount int," +
+                "pomodoro_text TEXT," +
+                "timeon int);");//1-sim, 2-não
 
         String sql = "INSERT INTO settings " +
-                "(id, pomodoro_time, short_break_time, long_break_time, alarm_sound, clock_sound) " +
-                "VALUES(1, 25, 5, 15, 'Sound 1', '')";
+                "(id, pomodoro_time, short_break_time, long_break_time, alarm_sound, clock_sound, pomodoro_amount, pomodoro_text, timeon) " +
+                "VALUES(1, 25, 5, 15, 'Sound 1', '', 0, 'Iniciar Pomodoro', 2)";
         db.execSQL(sql);
 
         db.execSQL("CREATE TABLE IF NOT EXISTS agenda (" +

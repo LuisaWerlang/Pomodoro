@@ -22,8 +22,11 @@ public class Utils {
     private int pomodoro_time;
     private int short_break_time;
     private int long_break_time;
+    private int pomodoro_amount;
     private String alarm_name;
     private String clock_name;
+    private String pomodoro_text;
+    private int timeon;
 
     private int agenda_id;
     private List<Map<String, Object>> agendas;
@@ -36,6 +39,9 @@ public class Utils {
         this.long_break_time = 15;
         this.alarm_name = "Sound 1";
         this.clock_name = "";
+        this.pomodoro_amount = 0;
+        this.pomodoro_text = "Iniciar Pomodoro";
+        this.timeon = 2;
     }
 
     public void findSettings() {
@@ -50,6 +56,9 @@ public class Utils {
             this.long_break_time = cursor.getInt(3);
             this.alarm_name = cursor.getString(4);
             this.clock_name = cursor.getString(5);
+            this.pomodoro_amount = cursor.getInt(6);
+            this.pomodoro_text = cursor.getString(7);
+            this.timeon = cursor.getInt(8);
             cursor.moveToNext();
         }
         cursor.close();
@@ -144,6 +153,12 @@ public class Utils {
     public String getClockName() {
         return this.clock_name;
     }
+
+    public int getPomodoroAmount() { return this.pomodoro_amount; }
+
+    public String getPomodoroText() { return this.pomodoro_text; }
+
+    public int getTimeOn() { return this.timeon; }
 
     public List<CalendarDay> getCalendarDays() {
         return this.calendarDays;

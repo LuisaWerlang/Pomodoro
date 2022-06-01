@@ -1,7 +1,9 @@
 package com.example.pomodoro;
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,13 +37,16 @@ public class PomodoroFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private Button start;
+    private Button start, new_activity;
     private int pomodoro_time, short_break_time, long_break_time;
     private TextView tv;
     private MediaPlayer mp;
     private int pomodoro_amount = 0;
     private DatabaseHelper helper;
     private Spinner tvActivity;
+    private String pomodoro_text;
+    private int timeon;
+    private MyCountDownTimer timer=null;
 
     public PomodoroFragment() {
         // Required empty public constructor
@@ -89,9 +94,24 @@ public class PomodoroFragment extends Fragment {
         short_break_time = utils.getShortBreakTime();
         long_break_time = utils.getLongBreakTime();
         String alarm_name = utils.getAlarmName();
+        pomodoro_amount = utils.getPomodoroAmount();
+        pomodoro_text = utils.getPomodoroText();
+        timeon = utils.getTimeOn();
 
         tv = view.findViewById(R.id.tvCountDownTimer);
-        tv.setText(pomodoro_time + " : 00");
+        //if (timeon == 2) {
+            switch (pomodoro_text) {
+                case "Iniciar Pomodoro":
+                    tv.setText(pomodoro_time + " : 00");
+                    break;
+                case "Iniciar pausa curta":
+                    tv.setText(short_break_time + " : 00");
+                    break;
+                case "Iniciar pausa longa":
+                    tv.setText(long_break_time + " : 00");
+                    break;
+            }
+        //}
 
         int alarm_sound = R.raw.sound_1;
         switch (alarm_name) {
@@ -130,10 +150,11 @@ public class PomodoroFragment extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, activities);
         tvActivity.setAdapter(adapter);
 
-        Button new_activity = view.findViewById(R.id.new_activity);
+        new_activity = view.findViewById(R.id.new_activity);
         new_activity.setOnClickListener(view1 -> newActivity());
 
         start = view.findViewById(R.id.start);
+        start.setText(pomodoro_text);
         int finalAlarm_sound = alarm_sound;
         start.setOnClickListener(view1 -> {
             if (tvActivity.getSelectedItem().equals("Selecione"))
@@ -155,19 +176,28 @@ public class PomodoroFragment extends Fragment {
     }
 
     public void startChronometer(TextView tv, int alarm_sound) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
         int time = 1;
         int clock_time = pomodoro_time;
         if (start.getText().equals("Iniciar Pomodoro")) {
             pomodoro_amount++;
             clock_time = pomodoro_time;
+            values.put("pomodoro_text", "Iniciar Pomodoro");
         } else if (start.getText().equals("Iniciar pausa curta")) {
             time = 2;
             clock_time = short_break_time;
+            values.put("pomodoro_text", "Iniciar pausa curta");
         } else if (start.getText().equals("Iniciar pausa longa")) {
             time = 3;
             pomodoro_amount = 0;
             clock_time = long_break_time;
+            values.put("pomodoro_text", "Iniciar pausa longa");
         }
+        values.put("pomodoro_amount", pomodoro_amount);
+        values.put("timeon", 1);
+        String[] where = new String[]{"1"};
+        db.update("settings", values, "id = ?", where);
 
         releasePlayer();
         mp = MediaPlayer.create(getActivity(), alarm_sound);
@@ -177,7 +207,7 @@ public class PomodoroFragment extends Fragment {
             mp = null;
         });
 
-        MyCountDownTimer timer = new MyCountDownTimer(getActivity(), tv, (long) clock_time * 60 * 1000, 1000, start, time, mp, pomodoro_amount, tvActivity);
+        timer = new MyCountDownTimer(getActivity(), tv, (long) clock_time * 60 * 1000, 1000, start, time, mp, pomodoro_amount, tvActivity, new_activity);
         timer.start();
     }
 
@@ -190,7 +220,16 @@ public class PomodoroFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        if(timer!=null)
+            timer.cancel();
+        super.onPause();
+    }
+
+    @Override
     public void onDestroy() {
+        if(timer!=null)
+            timer.cancel();
         helper.close();
         releasePlayer();
         super.onDestroy();

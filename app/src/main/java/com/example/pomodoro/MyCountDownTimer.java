@@ -5,8 +5,10 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.CountDownTimer;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
+import com.example.pomodoro.utils.DatabaseHelper;
 import com.example.pomodoro.utils.Utils;
 
 import java.util.Calendar;
@@ -25,15 +28,16 @@ import java.util.Calendar;
 public class MyCountDownTimer extends CountDownTimer {
     private final Context context;
     private final TextView tv;
-    private final Button start;
+    private final Button start, new_activity;
     private int pomodoro_time;
-    private final int pomodoro_amount;
+    private int pomodoro_amount;
     private int short_break_time;
     private int long_break_time;
     private final int time;//1-Pomodoro, 2-Pausa curta, 3-Pausa longa
     private final MediaPlayer mp;
     private MediaPlayer clock;
     private final Spinner sActivity;
+    private final DatabaseHelper helper;
 
     public MyCountDownTimer(Context context,
                             TextView tv,
@@ -43,7 +47,8 @@ public class MyCountDownTimer extends CountDownTimer {
                             int time,
                             MediaPlayer mp,
                             int pomodoro_amount,
-                            Spinner sActivity) {
+                            Spinner sActivity,
+                            Button new_activity) {
         super(timeInFuture, interval);
         this.context = context;
         this.tv = tv;
@@ -52,6 +57,8 @@ public class MyCountDownTimer extends CountDownTimer {
         this.mp = mp;
         this.pomodoro_amount = pomodoro_amount;
         this.sActivity = sActivity;
+        this.new_activity = new_activity;
+        this.helper = new DatabaseHelper(context);
         getSettings();
     }
 
@@ -119,23 +126,34 @@ public class MyCountDownTimer extends CountDownTimer {
         createBarNotification(); // notificação!
         releasePlayer();
         mp.start();
+        SQLiteDatabase db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
         if (this.pomodoro_amount == 4) {
             tv.setText(long_break_time + " : 00");
             Toast.makeText(context, "FAÇA A SUA PAUSA!", Toast.LENGTH_SHORT).show();
             start.setEnabled(true);
             start.setText("Iniciar pausa longa");
+            values.put("pomodoro_text", "Iniciar pausa longa");
+            this.pomodoro_amount = 0;
         } else if (this.time == 1) {
             tv.setText(short_break_time + " : 00");
             Toast.makeText(context, "FAÇA A SUA PAUSA!", Toast.LENGTH_SHORT).show();
             start.setEnabled(true);
             start.setText("Iniciar pausa curta");
+            values.put("pomodoro_text", "Iniciar pausa curta");
         } else if ((this.time == 2) || (this.time == 3)) {
             tv.setText(pomodoro_time + " : 00");
             start.setEnabled(true);
             sActivity.setEnabled(true);
-            Toast.makeText(context, "FINISH!", Toast.LENGTH_SHORT).show();
+            new_activity.setEnabled(true);
+            Toast.makeText(context, "Pomodoro finalizado!", Toast.LENGTH_SHORT).show();
             start.setText("Iniciar Pomodoro");
+            values.put("pomodoro_text", "Iniciar Pomodoro");
         }
+        values.put("pomodoro_amount", this.pomodoro_amount);
+        values.put("timeon", 2);
+        String[] where = new String[]{"1"};
+        db.update("settings", values, "id = ?", where);
     }
 
     private String getCorretcTimer(boolean isMinute, long millisUntilFinished) {
@@ -167,7 +185,7 @@ public class MyCountDownTimer extends CountDownTimer {
 
         int icone = R.drawable.ic_baseline_timelapse_24;
         long data = System.currentTimeMillis();
-        String text = "Finish";
+        String text = "Finalizado!";
 
         Intent i = new Intent(context, PomodoroFragment.class);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
