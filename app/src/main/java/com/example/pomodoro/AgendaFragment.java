@@ -23,11 +23,13 @@ import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,6 +49,7 @@ public class AgendaFragment extends Fragment implements OnDateSelectedListener, 
     private final int[] to = {R.id.activity, R.id.date, R.id.hour, R.id.hour_notify};
     private LinearLayout ll_add;
     private ImageButton add_agenda;
+    private String selected_date = "";
 
     public AgendaFragment() {
         // Required empty public constructor
@@ -80,7 +83,7 @@ public class AgendaFragment extends Fragment implements OnDateSelectedListener, 
         }
     }
 
-    @SuppressLint("ResourceType")
+    @SuppressLint({"ResourceType", "SimpleDateFormat"})
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -96,7 +99,34 @@ public class AgendaFragment extends Fragment implements OnDateSelectedListener, 
         MaterialCalendarView calendarView = view.findViewById(R.id.calendarView); // get the reference of CalendarView
         getCurrentDate();
 
-        //calendarView.setSelectedDate(CalendarDay.from(current_year, current_month,current_day));
+        Bundle mBundle;
+        mBundle = getArguments();
+        if (mBundle != null) {
+            selected_date = mBundle.getString("selected_date");
+        }
+
+        if (selected_date.isEmpty()) {
+            CalendarDay calendarDay = CalendarDay.from(current_year, current_month, current_day);
+            calendarView.setSelectedDate(calendarDay);
+            onDateSelected(calendarView, calendarDay, true);
+        } else {
+            try {
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                long finalDate = Objects.requireNonNull(dateFormat.parse(selected_date)).getTime() / 1000;
+                Date date = new Date(finalDate * 1000L);
+                SimpleDateFormat sdf = new SimpleDateFormat("dd");
+                int selected_day = Integer.parseInt(sdf.format(date));
+                sdf = new SimpleDateFormat("MM");
+                int selected_month = Integer.parseInt(sdf.format(date));
+                sdf = new SimpleDateFormat("yyyy");
+                int selected_year = Integer.parseInt(sdf.format(date));
+                CalendarDay calendarDay = CalendarDay.from(selected_year, selected_month, selected_day);
+                calendarView.setSelectedDate(calendarDay);
+                onDateSelected(calendarView, calendarDay, true);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
         calendarView.state().edit()
                 .setMinimumDate(CalendarDay.from(current_year, current_month, current_day))
                 .setCalendarDisplayMode(CalendarMode.MONTHS)

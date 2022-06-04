@@ -2,6 +2,7 @@ package com.example.pomodoro;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -39,6 +40,14 @@ public class LoginActivity extends AppCompatActivity {
         txt_user = findViewById(R.id.txt_user);
         txt_password = findViewById(R.id.txt_password);
 
+        SQLiteDatabase db = helper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("pomodoro_amount", 0);
+        values.put("pomodoro_text", "Iniciar Pomodoro");
+        values.put("timeon", 2);
+        String[] where = new String[]{"1"};
+        db.update("settings", values, "id = ?", where);
+
         Button button_login = findViewById(R.id.button_login);
         Button button_new = findViewById(R.id.button_new);
         button_login.setOnClickListener(view -> onClickLogin());
@@ -56,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
             String query = "SELECT * FROM user WHERE user = '" + user + "' AND password = '" + password + "'";
             Cursor cursor = db.rawQuery(query, null);
             if (cursor.getCount() == 0) {
-                Toast.makeText(getApplicationContext(), "Email e senha incorretos! Verifique e tente novamente", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Usuário e senha incorretos! Verifique e tente novamente", Toast.LENGTH_SHORT).show();
             } else {
                 String user_name = "";
                 int user_id = 0;

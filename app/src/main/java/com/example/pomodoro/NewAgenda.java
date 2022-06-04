@@ -40,7 +40,7 @@ public class NewAgenda extends AppCompatActivity {
     private int id;
     private long eventId;
     private Spinner tvActivity;
-    private String activity_name;
+    private String activity_name, date;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -53,7 +53,7 @@ public class NewAgenda extends AppCompatActivity {
 
         id = getIntent().getIntExtra("id", 0);
         eventId = getIntent().getLongExtra("eventID", 0);
-        String date = getIntent().getStringExtra("date");
+        date = getIntent().getStringExtra("date");
         String hour = getIntent().getStringExtra("hour");
         String hour_notify = getIntent().getStringExtra("hour_notify");
         String activity_name = getIntent().getStringExtra("activity_name");
@@ -260,6 +260,7 @@ public class NewAgenda extends AppCompatActivity {
         Intent it = new Intent(this, MainActivity.class);
         it.putExtra("screen", "AgendaFragment");
         it.putExtra("user_name", user_name);
+        it.putExtra("selected_date", date);
         startActivity(it);
     }
 

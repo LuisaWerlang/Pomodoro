@@ -68,9 +68,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             String fragment = getIntent().getStringExtra("screen");
             if(fragment.equals("AgendaFragment")) {
                 AgendaFragment agenda = new AgendaFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.nav_host_fragment_content_main, agenda)
-                        .commit();
+                Bundle bundle = new Bundle();
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                bundle.putString("selected_date", getIntent().getStringExtra("selected_date"));
+                agenda.setArguments(bundle);
+                fragmentTransaction.replace(R.id.nav_host_fragment_content_main, agenda, "NewFragmentTag");
+                fragmentTransaction.commit();
             } else if(fragment.equals("ActivitiesListFragment")) {
                 ActivitiesListFragment activities = new ActivitiesListFragment();
                 getSupportFragmentManager().beginTransaction()
