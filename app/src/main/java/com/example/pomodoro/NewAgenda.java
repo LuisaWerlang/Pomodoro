@@ -1,7 +1,10 @@
 package com.example.pomodoro;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
@@ -10,6 +13,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
@@ -95,10 +99,30 @@ public class NewAgenda extends AppCompatActivity {
         select_hour_notify.setOnClickListener(view -> selectHour(et_notify));
 
         Button save = findViewById(R.id.save_agenda);
-        save.setOnClickListener(view -> onSaveAgenda());
+        save.setOnClickListener(view -> onPermission());
 
         Button delete = findViewById(R.id.delete_agenda);
         delete.setOnClickListener(view -> onDeleteAgenda());
+    }
+
+    public void onPermission() {
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(NewAgenda.this, new String[]{Manifest.permission.WRITE_CALENDAR}, 1);
+        } else {
+            onSaveAgenda();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 1) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                onSaveAgenda();
+            } else {
+                Toast.makeText(this, "Não será possivel agendar o seu Pomodoro!!!", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @SuppressLint("SimpleDateFormat")

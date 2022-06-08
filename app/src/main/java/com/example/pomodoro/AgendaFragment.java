@@ -108,7 +108,7 @@ public class AgendaFragment extends Fragment implements OnDateSelectedListener, 
         if (selected_date.isEmpty()) {
             CalendarDay calendarDay = CalendarDay.from(current_year, current_month, current_day);
             calendarView.setSelectedDate(calendarDay);
-            onDateSelected(calendarView, calendarDay, true);
+            onDateSelected(calendarView, calendarDay, false);
         } else {
             try {
                 @SuppressLint("SimpleDateFormat") SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -122,7 +122,7 @@ public class AgendaFragment extends Fragment implements OnDateSelectedListener, 
                 int selected_year = Integer.parseInt(sdf.format(date));
                 CalendarDay calendarDay = CalendarDay.from(selected_year, selected_month, selected_day);
                 calendarView.setSelectedDate(calendarDay);
-                onDateSelected(calendarView, calendarDay, true);
+                onDateSelected(calendarView, calendarDay, false);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -167,7 +167,7 @@ public class AgendaFragment extends Fragment implements OnDateSelectedListener, 
             agendas_list.setOnItemClickListener(this);
             ll_add.setVisibility(View.VISIBLE);
             add_agenda.setOnClickListener(view1 -> newAgenda(finalDate));
-        } else {
+        } else if(selected) {
             ll_add.setVisibility(View.INVISIBLE);
             newAgenda(finalDate);
         }

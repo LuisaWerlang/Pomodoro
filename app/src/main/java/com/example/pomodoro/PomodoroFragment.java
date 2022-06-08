@@ -45,7 +45,6 @@ public class PomodoroFragment extends Fragment {
     private DatabaseHelper helper;
     private Spinner tvActivity;
     private String pomodoro_text;
-    private int timeon;
     private MyCountDownTimer timer=null;
 
     public PomodoroFragment() {
@@ -96,22 +95,19 @@ public class PomodoroFragment extends Fragment {
         String alarm_name = utils.getAlarmName();
         pomodoro_amount = utils.getPomodoroAmount();
         pomodoro_text = utils.getPomodoroText();
-        timeon = utils.getTimeOn();
 
         tv = view.findViewById(R.id.tvCountDownTimer);
-        //if (timeon == 2) {
-            switch (pomodoro_text) {
-                case "Iniciar Pomodoro":
-                    tv.setText(pomodoro_time + " : 00");
-                    break;
-                case "Iniciar pausa curta":
-                    tv.setText(short_break_time + " : 00");
-                    break;
-                case "Iniciar pausa longa":
-                    tv.setText(long_break_time + " : 00");
-                    break;
-            }
-        //}
+        switch (pomodoro_text) {
+            case "Iniciar Pomodoro":
+                tv.setText(pomodoro_time + " : 00");
+                break;
+            case "Iniciar pausa curta":
+                tv.setText(short_break_time + " : 00");
+                break;
+            case "Iniciar pausa longa":
+                tv.setText(long_break_time + " : 00");
+                break;
+        }
 
         int alarm_sound = R.raw.sound_1;
         switch (alarm_name) {
@@ -172,6 +168,7 @@ public class PomodoroFragment extends Fragment {
 
     public void newActivity() {
         Intent intent = new Intent(getActivity(), NewActivity.class);
+        intent.putExtra("screen","pomodoro");
         startActivity(intent);
     }
 

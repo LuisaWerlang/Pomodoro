@@ -1,5 +1,6 @@
 package com.example.pomodoro;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +50,10 @@ public class QuizzFragment extends Fragment {
     private String user_name;
     private int user_id, answer_pomodoro = 0;
     private ListView questions_list;
+    private Button save;
+    private ProgressDialog progressBar;
+    private int progressBarStatus = 0;
+    private final Handler progressBarHandler = new Handler();
 
     public static final String DATABASE_NAME = "pomodoro";
     public static final String url = "jdbc:mysql://pomodoro.cdoluywguze8.us-east-1.rds.amazonaws.com:3306/" +
@@ -129,7 +135,7 @@ public class QuizzFragment extends Fragment {
             }
         });
 
-        Button save = view.findViewById(R.id.save_questions);
+        save = view.findViewById(R.id.save_questions);
         save.setOnClickListener(view1 -> saveQuizz());
 
         return view;
@@ -188,12 +194,22 @@ public class QuizzFragment extends Fragment {
                         break;
                     }
                 } else {
+                    save_ok = false;
                     Toast.makeText(getActivity(), "Responda a todas as perguntas!", Toast.LENGTH_SHORT).show();
                     break;
                 }
             }
             if (save_ok) {
-                Toast.makeText(getActivity(), "Aguarde! Enviando os dados para o servidor...", Toast.LENGTH_LONG).show();
+                progressBar = new ProgressDialog(getContext());
+                progressBar.setCancelable(true);
+                progressBar.setMessage("Enviando os dados para o servidor... Aguarde!");
+                progressBar.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                progressBar.setProgress(0);
+                progressBar.setMax(100);
+                progressBar.show();
+                //reset progress bar and filesize status
+                progressBarStatus = 0;
+                save.setEnabled(false);
                 save(); //envia dados para o servidor
             }
         } else {
@@ -234,6 +250,23 @@ public class QuizzFragment extends Fragment {
                             "VALUES('" + user_id + "', '" + user_name + "', '" + adapter.getItem(i).question_name + "', '" +
                             ct + "', '" + c + "', '" + nd + "', '" + d + "', '" + dt + "', '" + answer_pomodoro +
                             "', '" + adapter.getItem(i).answer_observation + "', '" + value + "')");
+
+                    progressBarStatus = progressBarStatus+10;
+
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    progressBarHandler.post(() -> {
+                        progressBar.setProgress(progressBarStatus);
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    });
                 }
                 connection.close();
             } catch (Exception e) {
@@ -243,6 +276,8 @@ public class QuizzFragment extends Fragment {
             Objects.requireNonNull(getActivity()).runOnUiThread(() -> {
                 // after the job is finished:
                 Toast.makeText(getActivity(), "Registro salvo com sucesso!", Toast.LENGTH_SHORT).show();
+                progressBar.dismiss();
+                save.setEnabled(true);
                 clearFields();
             });
         }).start();

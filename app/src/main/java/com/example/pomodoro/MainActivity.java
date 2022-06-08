@@ -66,19 +66,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragmentTransaction.commit();
         } else if (getIntent().hasExtra("screen")) {
             String fragment = getIntent().getStringExtra("screen");
-            if(fragment.equals("AgendaFragment")) {
-                AgendaFragment agenda = new AgendaFragment();
-                Bundle bundle = new Bundle();
-                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                bundle.putString("selected_date", getIntent().getStringExtra("selected_date"));
-                agenda.setArguments(bundle);
-                fragmentTransaction.replace(R.id.nav_host_fragment_content_main, agenda, "NewFragmentTag");
-                fragmentTransaction.commit();
-            } else if(fragment.equals("ActivitiesListFragment")) {
-                ActivitiesListFragment activities = new ActivitiesListFragment();
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.nav_host_fragment_content_main, activities)
-                        .commit();
+            switch (fragment) {
+                case "AgendaFragment":
+                    AgendaFragment agenda = new AgendaFragment();
+                    Bundle bundle = new Bundle();
+                    FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    bundle.putString("selected_date", getIntent().getStringExtra("selected_date"));
+                    agenda.setArguments(bundle);
+                    fragmentTransaction.replace(R.id.nav_host_fragment_content_main, agenda, "NewFragmentTag");
+                    fragmentTransaction.commit();
+                    break;
+                case "ActivitiesListFragment":
+                    ActivitiesListFragment activities = new ActivitiesListFragment();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.nav_host_fragment_content_main, activities)
+                            .commit();
+                    break;
+                case "PomodoroFragment":
+                    PomodoroFragment pomodoro = new PomodoroFragment();
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.nav_host_fragment_content_main, pomodoro)
+                            .commit();
+                    break;
             }
         } else {
             PomodoroFragment fragment = new PomodoroFragment();

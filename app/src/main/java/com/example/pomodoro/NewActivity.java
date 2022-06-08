@@ -26,6 +26,7 @@ public class NewActivity extends AppCompatActivity {
     private EditText txt_name, txt_description;
     private CheckBox checkBox;
     private int id;
+    private String screen = "";
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -40,6 +41,10 @@ public class NewActivity extends AppCompatActivity {
         String name = getIntent().getStringExtra("name");
         String description = getIntent().getStringExtra("description");
         int concluded = getIntent().getIntExtra("concluded", 2);
+
+        if (getIntent().hasExtra("screen")) {
+            screen = getIntent().getStringExtra("screen");
+        }
 
         LinearLayout ll_delete = findViewById(R.id.ll_deleteActivity);
         LinearLayout ll_concludeActivity = findViewById(R.id.ll_concludeActivity);
@@ -131,7 +136,11 @@ public class NewActivity extends AppCompatActivity {
         SharedPreferences settings = getSharedPreferences("UserInfo", MODE_PRIVATE);
         String user_name = settings.getString("user_name", "");
         Intent it = new Intent(this, MainActivity.class);
-        it.putExtra("screen", "ActivitiesListFragment");
+        if(screen.equals("pomodoro")) {
+           it.putExtra("screen", "PomodoroFragment");
+        } else {
+            it.putExtra("screen", "ActivitiesListFragment");
+        }
         it.putExtra("user_name", user_name);
         startActivity(it);
     }
