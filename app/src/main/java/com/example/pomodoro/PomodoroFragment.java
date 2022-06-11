@@ -217,13 +217,6 @@ public class PomodoroFragment extends Fragment {
     }
 
     @Override
-    public void onPause() {
-        if(timer!=null)
-            timer.cancel();
-        super.onPause();
-    }
-
-    @Override
     public void onDestroy() {
         if(timer!=null)
             timer.cancel();

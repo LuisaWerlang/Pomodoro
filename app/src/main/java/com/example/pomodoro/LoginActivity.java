@@ -34,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
             intent.putExtra("user", user);
             intent.putExtra("user_id", user_id);
             startActivity(intent);
+            this.finish();
         }
 
         helper = new DatabaseHelper(this);
@@ -90,6 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                 intent.putExtra("user", user);
                 intent.putExtra("user_id", user_id);
                 startActivity(intent);
+                this.finish();
             }
         }
     }
