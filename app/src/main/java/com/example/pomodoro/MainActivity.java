@@ -173,12 +173,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.nav_host_fragment_content_main, fragment)
                     .commit();
-        } else if (id == R.id.nav_tutorial) {
+        } /*else if (id == R.id.nav_tutorial) {
             TutorialFragment fragment = new TutorialFragment();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.nav_host_fragment_content_main, fragment)
                     .commit();
-        } else if (id == R.id.nav_config) {
+        }*/ else if (id == R.id.nav_config) {
             SettingsFragment fragment = new SettingsFragment();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.nav_host_fragment_content_main, fragment)
